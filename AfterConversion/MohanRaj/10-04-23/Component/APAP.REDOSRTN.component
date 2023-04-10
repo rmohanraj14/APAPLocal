@@ -1,0 +1,491 @@
+component APAP.REDOSRTN
+# Component Isolation Definition
+metamodelVersion 1.6
+# -------------------------------------------------
+
+
+public method redoSFcLimiteTopeGr (
+   INOUT custId string,
+   INOUT custOut string
+)
+{
+   jBC: REDO.S.FC.LIMITE.TOPE.GR
+}
+
+
+
+public method redoSFcLimiteTopeVinc (
+   INOUT custId string,
+   INOUT custOut string
+)
+{
+   jBC: REDO.S.FC.LIMITE.TOPE.VINC
+}
+
+
+
+public method redoSFcPatrimoniotec (
+   INOUT custId string,
+   INOUT custOut string
+)
+{
+   jBC: REDO.S.FC.PATRIMONIOTEC
+}
+
+
+
+
+
+public method redoSFcViDisponibGrInv (
+   INOUT aaId string,
+   INOUT viArr string
+)
+{
+   jBC: REDO.S.FC.VI.DISPONIB.GR.INV
+}
+
+
+
+public method redoSFcViDisponibGrT (
+   INOUT aaId string,
+   INOUT viArr string
+)
+{
+   jBC: REDO.S.FC.VI.DISPONIB.GR.T
+}
+
+
+
+public method redoSFcViDisponibVGr (
+   INOUT aaId string,
+   INOUT viArr string
+)
+{
+   jBC: REDO.S.FC.VI.DISPONIB.V.GR
+}
+
+
+
+public method redoSFcViDisponibVinc (
+   INOUT aaId string,
+   INOUT viArr string
+)
+{
+   jBC: REDO.S.FC.VI.DISPONIB.VINC
+}
+
+
+
+public method redoSFcViExpTtGrupoR (
+   INOUT aaId string,
+   INOUT viArr string
+)
+{
+   jBC: REDO.S.FC.VI.EXP.TT.GRUPO.R
+}
+
+
+
+public method redoSFcViExposicionTGrupoR (
+   INOUT aaId string,
+   INOUT viArr string
+)
+{
+   jBC: REDO.S.FC.VI.EXPOSICION.T.GRUPO.R
+}
+
+
+
+public method redoSFcViExposicionTtGrupoV (
+   INOUT aaId string,
+   INOUT viArr string
+)
+{
+   jBC: REDO.S.FC.VI.EXPOSICION.TT.GRUPO.V
+}
+
+
+
+public method redoSFetchAddress (
+   INOUT res string
+)
+{
+   jBC: REDO.S.FETCH.ADDRESS
+}
+
+
+
+public method redoSFetchCardCustomer (
+   INOUT inParam string
+)
+{
+   jBC: REDO.S.FETCH.CARD.CUSTOMER
+}
+
+
+
+public method redoSFetchCardCustomerId (
+   INOUT inParam string
+)
+{
+   jBC: REDO.S.FETCH.CARD.CUSTOMER.ID
+}
+
+
+
+public method redoSFetchCardNo (
+   INOUT res string
+)
+{
+   jBC: REDO.S.FETCH.CARD.NO
+}
+
+
+
+public method redoSFetchCardNoTd (
+   INOUT res string
+)
+{
+   jBC: REDO.S.FETCH.CARD.NO.TD
+}
+
+
+
+public method redoSFetchCharge (
+   INOUT sysDate string
+)
+{
+   jBC: REDO.S.FETCH.CHARGE
+}
+
+
+
+public method redoSFetchCustIden (
+   INOUT res string
+)
+{
+   jBC: REDO.S.FETCH.CUST.IDEN
+}
+
+
+
+public method redoSFetchCustIdenNo (
+   INOUT res string
+)
+{
+   jBC: REDO.S.FETCH.CUST.IDEN.NO
+}
+
+
+
+public method redoSFetchCustomerNo (
+   INOUT custoemrNo string
+)
+{
+   jBC: REDO.S.FETCH.CUSTOMER.NO
+}
+
+
+
+public method redoSFetchDealTime (
+   INOUT res string
+)
+{
+   jBC: REDO.S.FETCH.DEAL.TIME
+}
+
+
+
+public method redoSFetchDebCustAcc (
+)
+{
+   jBC: REDO.S.FETCH.DEB.CUST.ACC
+}
+
+
+
+public method redoSFetchDob (
+   INOUT dobDate string
+)
+{
+   jBC: REDO.S.FETCH.DOB
+}
+
+
+
+public method redoSFetchLegalId (
+)
+{
+   jBC: REDO.S.FETCH.LEGAL.ID
+}
+
+
+public method redoSFetchSysDate (
+   INOUT sysDate string
+)
+{
+   jBC: REDO.S.FETCH.SYS.DATE
+}
+
+
+
+public method redoSFetchSystemDate (
+   INOUT sysDate string
+)
+{
+   jBC: REDO.S.FETCH.SYSTEM.DATE
+}
+
+
+
+public method redoSFetchTelephone (
+   INOUT res string
+)
+{
+   jBC: REDO.S.FETCH.TELEPHONE
+}
+
+
+
+public method redoSFetchTellerId (
+   INOUT yTellerId string
+)
+{
+   jBC: REDO.S.FETCH.TELLER.ID
+}
+
+
+
+public method redoSFetchValDate (
+   INOUT valDate string
+)
+{
+   jBC: REDO.S.FETCH.VAL.DATE
+}
+
+
+
+public method redoSFetchValueDate (
+   INOUT valDate string
+)
+{
+   jBC: REDO.S.FETCH.VALUE.DATE
+}
+
+
+
+public method redoSFormatDate (
+)
+{
+   jBC: REDO.S.FORMAT.DATE
+}
+
+
+
+public method redoSFormatDateTime (
+   INOUT sysDateTime string
+)
+{
+   jBC: REDO.S.FORMAT.DATE.TIME
+}
+
+
+
+public method redoSFormatTime (
+)
+{
+   jBC: REDO.S.FORMAT.TIME
+}
+
+
+
+public method redoSGetAccHolder (
+   INOUT jointName string
+)
+{
+   jBC: REDO.S.GET.ACC.HOLDER
+}
+
+
+
+public method redoSGetAzAccName (
+   INOUT customerName string
+)
+{
+   jBC: REDO.S.GET.AZ.ACC.NAME
+}
+
+
+public method redoSGetClientType (
+   INOUT type string
+)
+{
+   jBC: REDO.S.GET.CLIENT.TYPE
+}
+
+
+public method redoSGetCusIdentity (
+   INOUT customerIdentity string
+)
+{
+   jBC: REDO.S.GET.CUS.IDENTITY
+}
+
+
+
+public method redoSGetCusName (
+   INOUT customerName string
+)
+{
+   jBC: REDO.S.GET.CUS.NAME
+}
+
+
+
+public method redoSGetCusNo (
+   INOUT cusOut string
+)
+{
+   jBC: REDO.S.GET.CUS.NO
+}
+
+
+
+public method redoSGetCusNumber (
+   INOUT customerNo string
+)
+{
+   jBC: REDO.S.GET.CUS.NUMBER
+}
+
+
+
+public method redoSGetCustIden (
+)
+{
+   jBC: REDO.S.GET.CUST.IDEN
+}
+
+
+
+public method redoSGetCustNam (
+   INOUT customerName string
+)
+{
+   jBC: REDO.S.GET.CUST.NAM
+}
+
+
+
+public method redoSGetDenomination (
+   INOUT vDrDenominatio string
+)
+{
+   jBC: REDO.S.GET.DENOMINATION
+}
+
+
+
+public method redoSGetExchgRate (
+   INOUT exchgRate string
+)
+{
+   jBC: REDO.S.GET.EXCHG.RATE
+}
+
+
+
+public method redoSGetFcyAmt (
+   INOUT fcyAmt string
+)
+{
+   jBC: REDO.S.GET.FCY.AMT
+}
+
+
+
+public method redoSGetFxBuySrc (
+   INOUT buySrc string
+)
+{
+   jBC: REDO.S.GET.FX.BUY.SRC
+}
+
+
+
+public method redoSGetFxSelDst (
+   INOUT selDst string
+)
+{
+   jBC: REDO.S.GET.FX.SEL.DST
+}
+
+
+
+public method redoSGetIdNew (
+)
+{
+   jBC: REDO.S.GET.ID.NEW
+}
+
+
+
+public method redoSGetLcyAmt (
+   INOUT lcyAmt string
+)
+{
+   jBC: REDO.S.GET.LCY.AMT
+}
+
+
+
+public method redoSGetNarrative (
+)
+{
+   jBC: REDO.S.GET.NARRATIVE
+}
+
+
+
+public method redoSGetOutBalance (
+   INOUT aaId string,
+   INOUT wamtAa string
+)
+{
+   jBC: REDO.S.GET.OUT.BALANCE
+}
+
+
+
+public method redoSGetPass (
+   INOUT userPass string
+)
+{
+   jBC: REDO.S.GET.PASS
+}
+
+
+
+public method redoSGetPayMethod (
+   INOUT payMethod string
+)
+{
+   jBC: REDO.S.GET.PAY.METHOD
+}
+
+
+public method redoSGetPrint (
+)
+{
+   jBC: REDO.S.GET.PRINT
+}
+
+
+
+public method redoSGetRcepMthd (
+   INOUT rcepMthd string
+)
+{
+   jBC: REDO.S.GET.RCEP.MTHD
+}
+
