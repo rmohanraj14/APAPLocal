@@ -1,0 +1,400 @@
+component APAP.REDOVER
+# Component Isolation Definition
+metamodelVersion 1.6
+# -------------------------------------------------
+
+
+public method redoVAncAzTermDeposit (
+)
+{
+    jBC: REDO.V.ANC.AZ.TERM.DEPOSIT
+}
+
+
+
+public method redoVAutAddBen (
+)
+{
+    jBC: REDO.V.AUT.ADD.BEN
+}
+
+
+
+public method redoVAutChqInLogUpdate (
+)
+{
+    jBC: REDO.V.AUT.CHQ.IN.LOG.UPDATE
+}
+
+
+
+public method redoVAutClaimLogUpdate (
+)
+{
+    jBC: REDO.V.AUT.CLAIM.LOG.UPDATE
+}
+
+
+
+public method redoVAutClaimsCloseLetter (
+)
+{
+    jBC: REDO.V.AUT.CLAIMS.CLOSE.LETTER
+}
+
+
+
+public method redoVAutClaimsMailAlert (
+)
+{
+    jBC: REDO.V.AUT.CLAIMS.MAIL.ALERT
+}
+
+
+
+public method redoVAutClaimsOpenLetter (
+)
+{
+    jBC: REDO.V.AUT.CLAIMS.OPEN.LETTER
+}
+
+
+
+public method redoVAutConComp (
+)
+{
+    jBC: REDO.V.AUT.CON.COMP
+}
+
+
+
+public method redoVAutConReq (
+)
+{
+    jBC: REDO.V.AUT.CON.REQ
+}
+
+
+
+public method redoVAutCreateSto (
+)
+{
+    jBC: REDO.V.AUT.CREATE.STO
+}
+
+
+
+public method redoVAutDebitLogUpdate (
+)
+{
+    jBC: REDO.V.AUT.DEBIT.LOG.UPDATE
+}
+
+
+
+public method redoVAutDefPartDel (
+)
+{
+    jBC: REDO.V.AUT.DEF.PART.DEL
+}
+
+
+
+public method redoVAutEffRate (
+)
+{
+    jBC: REDO.V.AUT.EFF.RATE
+}
+
+
+
+public method redoVAutFtCheckAcc (
+)
+{
+    jBC: REDO.V.AUT.FT.CHECK.ACC
+}
+
+
+
+
+
+public method redoVAutGenDeal (
+)
+{
+    jBC: REDO.V.AUT.GEN.DEAL
+}
+
+
+
+public method redoVAutGetSha1 (
+)
+{
+    jBC: REDO.V.AUT.GET.SHA1
+}
+
+
+
+public method redoVAutOfsUpdStatus (
+)
+{
+    jBC: REDO.V.AUT.OFS.UPD.STATUS
+}
+
+
+
+public method redoVAutPartProcess (
+)
+{
+    jBC: REDO.V.AUT.PART.PROCESS
+}
+
+
+
+public method redoVAutPassLogUpdate (
+)
+{
+    jBC: REDO.V.AUT.PASS.LOG.UPDATE
+}
+
+
+
+public method redoVAutPayrollFile (
+)
+{
+    jBC: REDO.V.AUT.PAYROLL.FILE
+}
+
+
+
+public method redoVAutRaiseFtentry (
+)
+{
+    jBC: REDO.V.AUT.RAISE.FTENTRY
+}
+
+
+
+public method redoVAutReinsStatus (
+)
+{
+    jBC: REDO.V.AUT.REINS.STATUS
+}
+
+
+
+public method redoVAutRenewCards (
+)
+{
+    jBC: REDO.V.AUT.RENEW.CARDS
+}
+
+
+
+public method redoVAutReprintTxn (
+)
+{
+    jBC: REDO.V.AUT.REPRINT.TXN
+}
+
+
+
+public method redoVAutRequestCloseLetter (
+)
+{
+    jBC: REDO.V.AUT.REQUEST.CLOSE.LETTER
+}
+
+
+
+public method redoVAutRequestLogUpdate (
+)
+{
+    jBC: REDO.V.AUT.REQUEST.LOG.UPDATE
+}
+
+
+
+public method redoVAutScBuyEffRate (
+)
+{
+    jBC: REDO.V.AUT.SC.BUY.EFF.RATE
+}
+
+
+
+public method redoVAutStBuySel (
+)
+{
+    jBC: REDO.V.AUT.ST.BUY.SEL
+}
+
+
+
+public method redoVAutStBuySell (
+)
+{
+    jBC: REDO.V.AUT.ST.BUY.SELL
+}
+
+
+
+public method redoVAutStatusChange (
+)
+{
+    jBC: REDO.V.AUT.STATUS.CHANGE
+}
+
+
+
+public method redoVAutUpdClaimsOpen (
+)
+{
+    jBC: REDO.V.AUT.UPD.CLAIMS.OPEN
+}
+
+
+
+public method redoVAutUpdDisbLoan (
+)
+{
+    jBC: REDO.V.AUT.UPD.DISB.LOAN
+}
+
+
+
+public method redoVAutUpdDisbRef (
+)
+{
+    jBC: REDO.V.AUT.UPD.DISB.REF
+}
+
+
+
+public method redoVAutUpdFxPos (
+)
+{
+    jBC: REDO.V.AUT.UPD.FX.POS
+}
+
+
+
+public method redoVAutUpdLtFxLimit (
+)
+{
+    jBC: REDO.V.AUT.UPD.LT.FX.LIMIT
+}
+
+
+
+public method redoVAutUpdStaffAcct (
+)
+{
+    jBC: REDO.V.AUT.UPD.STAFF.ACCT
+}
+
+
+
+public method redoVAutUpdStatus (
+)
+{
+    jBC: REDO.V.AUT.UPD.STATUS
+}
+
+
+
+public method redoVAutUpdTables (
+)
+{
+    jBC: REDO.V.AUT.UPD.TABLES
+}
+
+
+
+public method redoVAuthAdjSuspBal (
+)
+{
+    jBC: REDO.V.AUTH.ADJ.SUSP.BAL
+}
+
+
+
+public method redoVAuthAmtLock (
+)
+{
+    jBC: REDO.V.AUTH.AMT.LOCK
+}
+
+
+
+public method redoVAuthCertDetails (
+)
+{
+    jBC: REDO.V.AUTH.CERT.DETAILS
+}
+
+
+
+public method redoVAuthCollMvmtDets (
+)
+{
+    jBC: REDO.V.AUTH.COLL.MVMT.DETS
+}
+
+
+
+public method redoVAuthDeposit (
+    INOUT yAcOgmId string,
+    INOUT yAcOgmId1 string
+)
+{
+    jBC: REDO.V.AUTH.DEPOSIT
+}
+
+
+
+public method redoVAuthDisProcess (
+)
+{
+    jBC: REDO.V.AUTH.DIS.PROCESS
+}
+
+
+
+public method redoVAuthFtTxn (
+)
+{
+    jBC: REDO.V.AUTH.FT.TXN
+}
+
+
+
+public method redoVAuthFtUpdDisb (
+)
+{
+    jBC: REDO.V.AUTH.FT.UPD.DISB
+}
+
+
+
+public method redoVAuthGenAcLock (
+)
+{
+    jBC: REDO.V.AUTH.GEN.AC.LOCK
+}
+
+
+
+public method redoVAuthItemRequest (
+)
+{
+    jBC: REDO.V.AUTH.ITEM.REQUEST
+}
+
+
+
+public method redoVAuthLoanAliasName (
+)
+{
+    jBC: REDO.V.AUTH.LOAN.ALIAS.NAME
+}
+
