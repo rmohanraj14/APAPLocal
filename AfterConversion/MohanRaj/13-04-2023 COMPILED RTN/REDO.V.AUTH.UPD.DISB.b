@@ -1,0 +1,226 @@
+* @ValidationCode : MjotOTA3MDMwMjQ2OkNwMTI1MjoxNjgxMzgxODY5MjI1OjkxNjM4Oi0xOi0xOjA6MDpmYWxzZTpOL0E6UjIxX0FNUi4wOi0xOi0x
+* @ValidationInfo : Timestamp         : 13 Apr 2023 16:01:09
+* @ValidationInfo : Encoding          : Cp1252
+* @ValidationInfo : User Name         : 91638
+* @ValidationInfo : Nb tests success  : N/A
+* @ValidationInfo : Nb tests failure  : N/A
+* @ValidationInfo : Rating            : N/A
+* @ValidationInfo : Coverage          : N/A
+* @ValidationInfo : Strict flag       : N/A
+* @ValidationInfo : Bypass GateKeeper : false
+* @ValidationInfo : Compiler Version  : R21_AMR.0
+* @ValidationInfo : Copyright Temenos Headquarters SA 1993-2021. All rights reserved.
+$PACKAGE APAP.REDOVER
+SUBROUTINE REDO.V.AUTH.UPD.DISB
+*-----------------------------------------------------------------------------
+*DESCRIPTION:
+*------------
+*This routine is an Auth routine attached to below versions,
+* FUNDS.TRANSFER,REDO.AA.CASH
+* FUNDS.TRANSFER,CHQ.OTHERS.LOAN
+* FUNDS.TRANSFER,REDO.AA.OTI
+* FUNDS.TRANSFER,REDO.AA.INTERBRANCH.ACH
+*
+* Input/Output:
+*--------------
+* IN  : -NA-
+* OUT : -NA-
+*
+* Dependencies:
+*---------------
+* CALLS : -NA-
+* CALLED BY : -NA-
+*
+* Revision History:
+*------------------
+*   Date               who           Reference          Description
+* 21-07-2011        Bharath G        PACS00085750       Initial Creation
+* 18/08/2011        Bharath G        PACS00100502       Routine updated to handle FUNDS.TRANSFER,REDO.AA.INTERBRANCH.ACH version
+* 09-09-2011        Marimuthu S      PACS00121111       To capture cheque type
+* 19-01-2012        WALID K          PACS00175273       To update the added fields in the version FUNDS.TRANSFER,REDO.AA.OTI in the local template REDO.MTS.DISBURSE
+* 19-01-2012        WALID K          PACS00175274       To update the added fields in the version FUNDS.TRANSFER,REDO.AA.CASH in the local template REDO.MTS.DISBURSE
+* 15-02-2012        WALID K          PACS00182173       To capture remarks from FUNDS.TRANSFER,REDO.AA.INTERBRANCH.ACH
+* 10-06-2012        Marimuthu S      PACS00146445       Customer id added
+*Modification history
+*Date                Who               Reference                  Description
+*13-04-2023      conversion tool     R22 Auto code conversion     VM TO @VM
+*13-04-2023      Mohanraj R          R22 Manual code conversion   No changes
+*------------------------------------------------------------------------------------------
+    $INSERT I_EQUATE
+    $INSERT I_COMMON
+    $INSERT I_F.TELLER
+    $INSERT I_F.USER
+    $INSERT I_F.FUNDS.TRANSFER
+    $INSERT I_F.CUSTOMER
+    $INSERT I_F.ACCOUNT
+    $INSERT I_F.REDO.MTS.DISBURSE
+    $INSERT I_F.REDO.DISB.CHAIN
+
+    GOSUB INIT
+    GOSUB PROCESS
+
+RETURN
+******
+INIT:
+******
+*Initialize all the variables
+
+    FN.REDO.MTS.DISBURSE   ='F.REDO.MTS.DISBURSE'
+    FN.CUSTOMER            ='F.CUSTOMER'
+    FN.ACCOUNT             ='F.ACCOUNT'
+    FN.REDO.DISB.CHAIN = 'F.REDO.DISB.CHAIN'
+    F.REDO.DISB.CHAIN = ''
+    F.REDO.MTS.DISBURSE    =''
+    F.CUSTOMER  =''
+    F.ACCOUNT  =''
+    REDO.MTS.DISBURSE =''
+
+    CALL OPF(FN.REDO.MTS.DISBURSE,F.REDO.MTS.DISBURSE)
+    CALL OPF(FN.CUSTOMER,F.CUSTOMER)
+    CALL OPF(FN.ACCOUNT,F.ACCOUNT)
+    CALL OPF(FN.REDO.DISB.CHAIN,F.REDO.DISB.CHAIN)
+    LREF.APP = 'FUNDS.TRANSFER'
+** PACS00175273 -S
+    LREF.FIELDS = 'L.FT.CUSTOMER':@VM:'L.FT.CLIENT.NME':@VM:'L.FT.COMPANY':@VM:'L.FT.CMPNY.NAME':@VM:'BENEFIC.NAME':@VM:'L.FT.CONCEPT':@VM:'L.FT.ACH.B.NAM':@VM:'L.FT.ACH.B.ACC':@VM:'L.FTST.ACH.PART':@VM:'L.FT.CMPNY.ID':@VM:'BENEFIC.NAME':@VM:'L.FT.MSG.DESC':@VM:'L.FT.DOC.NUM':@VM:'L.COMMENTS':@VM:'L.FT.LEGAL.ID':@VM:'L.INITIAL.ID'
+
+** PACS00175273 -E
+
+    LREF.POS=''
+    CALL MULTI.GET.LOC.REF(LREF.APP,LREF.FIELDS,LREF.POS)
+    VAR.L.FT.CUSTOMER.POS   = LREF.POS<1,1>
+    VAR.L.FT.CLIENT.NME.POS = LREF.POS<1,2>
+    VAR.L.FT.COMPANY.POS    = LREF.POS<1,3>
+    VAR.L.FT.CMPNY.NAME.POS = LREF.POS<1,4>
+    POS.BENEFIC.NAME        = LREF.POS<1,5>
+    POS.CONCEPT             = LREF.POS<1,6>
+    POS.ACH.B.NAM           = LREF.POS<1,7>
+    POS.ACH.B.ACC           = LREF.POS<1,8>
+    POS.FTST.ACH.PART       = LREF.POS<1,9>
+    POS.L.FT.CMPNY.ID       = LREF.POS<1,10>
+    POS.BENEFIC.NAME        = LREF.POS<1,11>
+    POS.CQ.TYPE             = LREF.POS<1,12>
+** PACS00175273 -S
+    POS.IDENTITY.DOC        = LREF.POS<1,13>
+    POS.L.COMMENTS          = LREF.POS<1,14>
+** PACS00175273 -E
+    POS.L.FT.LEGAL.ID       = LREF.POS<1,15>
+    POS.L.INITIAL.ID       = LREF.POS<1,16>
+
+RETURN
+***********
+PROCESS:
+***********
+
+
+    IF R.NEW(FT.RECORD.STATUS) EQ 'RNAU' THEN
+        CALL F.READ(FN.REDO.MTS.DISBURSE,ID.NEW,R.REDO.MTS.DISBURSE,F.REDO.MTS.DISBURSE,MTS.DISB.ERR)
+        R.REDO.MTS.DISBURSE<MT.AZ.ACCT.STATUS>       = 'REVERSED'
+    END
+
+    IF R.NEW(FT.RECORD.STATUS) EQ 'INAU' THEN
+        R.REDO.MTS.DISBURSE<MT.AZ.ACCT.STATUS>       = 'AUTHORISED'
+
+        BEGIN CASE
+            CASE PGM.VERSION EQ ',REDO.AA.CASH' OR PGM.VERSION EQ ',REDO.AA.PART.CASH'
+                Y.TRNS.TYPE = 'CASH'
+** PACS00175274 -S
+*R.REDO.MTS.DISBURSE<MT.BENEFICIARY>            = R.NEW(FT.LOCAL.REF)<1,VAR.L.FT.CLIENT.NME.POS>
+                R.REDO.MTS.DISBURSE<MT.BENEFICIARY,1>          = R.NEW(FT.LOCAL.REF)<1,POS.BENEFIC.NAME,1>
+                R.REDO.MTS.DISBURSE<MT.IDENTITY.DOC>          = R.NEW(FT.LOCAL.REF)<1,POS.IDENTITY.DOC>
+*R.REDO.MTS.DISBURSE<MT.REMARKS>                = R.NEW(FT.PAYMENT.DETAILS)
+                R.REDO.MTS.DISBURSE<MT.REMARKS>                = R.NEW(FT.LOCAL.REF)<1,POS.L.COMMENTS>
+** PACS00175274 -E
+                R.REDO.MTS.DISBURSE<MT.BRANCH.ID>              = R.NEW(FT.LOCAL.REF)<1,VAR.L.FT.COMPANY.POS>
+
+            CASE PGM.VERSION EQ ',REDO.AA.CHEQUE' OR PGM.VERSION EQ ',REDO.AA.PART.CHEQUE'
+                Y.TRNS.TYPE = 'CHEQUE'
+                R.REDO.MTS.DISBURSE<MT.BENEFICIARY,1>          = R.NEW(FT.LOCAL.REF)<1,POS.BENEFIC.NAME,1>
+                R.REDO.MTS.DISBURSE<MT.BENEFICIARY,2>          = R.NEW(FT.LOCAL.REF)<1,POS.BENEFIC.NAME,2>
+                R.REDO.MTS.DISBURSE<MT.NARRATIVE>              = R.NEW(FT.PAYMENT.DETAILS)
+                R.REDO.MTS.DISBURSE<MT.REMARKS>                = R.NEW(FT.LOCAL.REF)<1,POS.CONCEPT>
+                R.REDO.MTS.DISBURSE<MT.BRANCH.ID>              = R.NEW(FT.LOCAL.REF)<1,VAR.L.FT.COMPANY.POS>
+** PACS00121111 -S
+                R.REDO.MTS.DISBURSE<MT.ADMIN.CQ.TYPE>          = R.NEW(FT.LOCAL.REF)<1,POS.L.FT.LEGAL.ID>
+** PACS00121111 -E
+
+            CASE PGM.VERSION EQ ',REDO.AA.OTI' OR PGM.VERSION EQ ',REDO.AA.PART.OTI'
+                Y.TRNS.TYPE = 'DEPOSIT'
+** PACS00175273 -S
+*R.REDO.MTS.DISBURSE<MT.BENEFICIARY>            = R.NEW(FT.LOCAL.REF)<1,VAR.L.FT.CLIENT.NME.POS>
+                R.REDO.MTS.DISBURSE<MT.BENEFICIARY,1>          = R.NEW(FT.LOCAL.REF)<1,POS.BENEFIC.NAME,1>
+                R.REDO.MTS.DISBURSE<MT.IDENTITY.DOC>          = R.NEW(FT.LOCAL.REF)<1,POS.IDENTITY.DOC>
+** PACS00175273 -E
+                R.REDO.MTS.DISBURSE<MT.BRANCH.ID>              = R.NEW(FT.LOCAL.REF)<1,VAR.L.FT.COMPANY.POS>
+                R.REDO.MTS.DISBURSE<MT.REMARKS>                = R.NEW(FT.PAYMENT.DETAILS)
+
+            CASE PGM.VERSION EQ ',REDO.AA.INTERBRANCH.ACH' OR PGM.VERSION EQ ',REDO.AA.PART.INTERBRANCH.ACH'
+                Y.TRNS.TYPE = 'INTER-DEPARTMENT'
+                R.REDO.MTS.DISBURSE<MT.BENEFICIARY,1>          = R.NEW(FT.LOCAL.REF)<1,POS.BENEFIC.NAME,1>
+                R.REDO.MTS.DISBURSE<MT.BENEFICIARY,2>          = R.NEW(FT.LOCAL.REF)<1,POS.BENEFIC.NAME,2>
+                R.REDO.MTS.DISBURSE<MT.NARRATIVE>              = R.NEW(FT.LOCAL.REF)<1,POS.BENEFIC.NAME,3>
+                R.REDO.MTS.DISBURSE<MT.REMARKS>                = R.NEW(FT.LOCAL.REF)<1,POS.BENEFIC.NAME,4>
+                R.REDO.MTS.DISBURSE<MT.ROUTING.NO>             = R.NEW(FT.LOCAL.REF)<1,POS.BENEFIC.NAME,5>
+                R.REDO.MTS.DISBURSE<MT.CHEQUE.TYPE>            = R.NEW(FT.LOCAL.REF)<1,POS.BENEFIC.NAME,6>
+** PACS00182173 -s
+*R.REDO.MTS.DISBURSE<MT.PAYMENT.DETAILS>        = R.NEW(FT.PAYMENT.DETAILS)
+                R.REDO.MTS.DISBURSE<MT.PAYMENT.DETAILS>        = R.NEW(FT.LOCAL.REF)<1,POS.CQ.TYPE>
+** PACS00182173 -E
+                R.REDO.MTS.DISBURSE<MT.BEN.ACCT.NO>            = R.NEW(FT.LOCAL.REF)<1,POS.ACH.B.ACC>
+                R.REDO.MTS.DISBURSE<MT.BRANCH.ID>              = R.NEW(FT.LOCAL.REF)<1,POS.L.FT.CMPNY.ID>
+
+        END CASE
+
+        GOSUB INPUT.PROCESS
+    END
+
+    GOSUB WRITE.FILE
+    GOSUB UPDATE.DISB.CHAIN
+
+RETURN
+**************
+INPUT.PROCESS:
+**************
+*
+    Y.CUS.NO      =   R.NEW(FT.LOCAL.REF)<1,VAR.L.FT.CUSTOMER.POS>
+    Y.ACC.ID      =   R.NEW(FT.DEBIT.ACCT.NO)
+    CALL F.READ(FN.CUSTOMER,Y.CUS.NO,R.CUSTOMER,F.CUSTOMER,Y.CUS.ERR)
+    CALL F.READ(FN.ACCOUNT,Y.ACC.ID,R.ACCOUNT,F.ACCOUNT,Y.ACC.ERR)
+    IF R.CUSTOMER THEN
+        R.REDO.MTS.DISBURSE<MT.CUSTOMER.NO> = Y.CUS.NO
+    END ELSE
+        R.REDO.MTS.DISBURSE<MT.CUSTOMER.NO> = R.ACCOUNT<AC.CUSTOMER>
+    END
+    R.REDO.MTS.DISBURSE<MT.BR.AC.NUMBER>         = R.NEW(FT.CREDIT.ACCT.NO)
+    R.REDO.MTS.DISBURSE<MT.ARRANGEMENT.ID>       = R.ACCOUNT<AC.ARRANGEMENT.ID>
+    R.REDO.MTS.DISBURSE<MT.TRAN.TYPE>            = Y.TRNS.TYPE
+    R.REDO.MTS.DISBURSE<MT.CURRENCY>             = R.NEW(FT.CREDIT.CURRENCY)
+    R.REDO.MTS.DISBURSE<MT.AMOUNT>               = R.NEW(FT.CREDIT.AMOUNT)
+    IF R.REDO.MTS.DISBURSE<MT.AMOUNT> EQ '' THEN
+        R.REDO.MTS.DISBURSE<MT.CURRENCY>         = R.NEW(FT.DEBIT.CURRENCY)
+        R.REDO.MTS.DISBURSE<MT.AMOUNT>           = R.NEW(FT.DEBIT.AMOUNT)
+    END
+    R.REDO.MTS.DISBURSE<MT.LN.ACCOUNT.NO>        = Y.ACC.ID
+    R.REDO.MTS.DISBURSE<MT.VALUE.DATE>           = R.NEW(FT.CREDIT.VALUE.DATE)
+
+RETURN
+************
+WRITE.FILE:
+************
+
+    CALL F.WRITE(FN.REDO.MTS.DISBURSE,ID.NEW,R.REDO.MTS.DISBURSE)
+RETURN
+
+UPDATE.DISB.CHAIN:
+******************
+    IF PGM.VERSION EQ ',REDO.DISB.REV' THEN
+        Y.INITIAL.ID = R.NEW(FT.LOCAL.REF)<1,POS.L.INITIAL.ID>
+        Y.TEMP.ID    = R.NEW(FT.CREDIT.THEIR.REF)
+        CALL F.READ(FN.REDO.DISB.CHAIN,Y.INITIAL.ID,R.REDO.DISB.CHAIN,F.REDO.DISB.CHAIN,DISB.ERR)
+        LOCATE Y.TEMP.ID IN R.REDO.DISB.CHAIN<DS.CH.FT.TEMP.REF,1> SETTING TEMP.POS THEN
+            R.REDO.DISB.CHAIN<DS.CH.TR.STATUS,TEMP.POS> = 'AUTH-REV'
+            CALL F.WRITE(FN.REDO.DISB.CHAIN,Y.INITIAL.ID,R.REDO.DISB.CHAIN)
+        END
+    END
+RETURN
+***************************************************************************
+END

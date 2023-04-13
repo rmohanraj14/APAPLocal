@@ -1,0 +1,578 @@
+component APAP.REDOVER
+# Component Isolation Definition
+metamodelVersion 1.6
+# -------------------------------------------------
+public method redoVAutReprintTxn (
+)
+{
+    jBC: REDO.V.AUT.REPRINT.TXN
+}
+
+
+public method redoVAuthLockAcct (
+)
+{
+    jBC: REDO.V.AUTH.LOCK.ACCT
+}
+
+
+
+public method redoVAuthPayTeller (
+)
+{
+    jBC: REDO.V.AUTH.PAY.TELLER
+}
+
+
+
+public method redoVAuthRevTaxAmt (
+)
+{
+    jBC: REDO.V.AUTH.REV.TAX.AMT
+}
+
+
+
+public method redoVAuthRouteTable (
+)
+{
+    jBC: REDO.V.AUTH.ROUTE.TABLE
+}
+
+
+
+public method redoVAuthSeriesCheck (
+)
+{
+    jBC: REDO.V.AUTH.SERIES.CHECK
+}
+
+
+
+public method redoVAuthTaxAmt (
+)
+{
+    jBC: REDO.V.AUTH.TAX.AMT
+}
+
+
+
+public method redoVAuthTransferAmongAreas (
+)
+{
+    jBC: REDO.V.AUTH.TRANSFER.AMONG.AREAS
+}
+
+
+
+public method redoVAuthUpdAleTfs (
+)
+{
+    jBC: REDO.V.AUTH.UPD.ALE.TFS
+}
+
+
+
+public method redoVAuthUpdDisb (
+)
+{
+    jBC: REDO.V.AUTH.UPD.DISB
+}
+
+
+
+public method redoVAuthUpdGarnishDet (
+)
+{
+    jBC: REDO.V.AUTH.UPD.GARNISH.DET
+}
+
+
+
+public method redoVAuthUpdateEsm (
+)
+{
+    jBC: REDO.V.AUTH.UPDATE.ESM
+}
+
+
+
+public method redoVAuthUpdateInventory (
+)
+{
+    jBC: REDO.V.AUTH.UPDATE.INVENTORY
+}
+
+
+
+public method redoVAvailProgram (
+)
+{
+    jBC: REDO.V.AVAIL.PROGRAM
+}
+
+
+
+public method redoVBaOrgFtRev (
+)
+{
+    jBC: REDO.V.BA.ORG.FT.REV
+}
+
+
+
+public method redoVBaOrgFtTxn (
+)
+{
+    jBC: REDO.V.BA.ORG.FT.TXN
+}
+
+
+
+public method redoVBautUpdCusDob (
+)
+{
+    jBC: REDO.V.BAUT.UPD.CUS.DOB
+}
+
+
+
+public method redoVBefAutPrintDslip (
+)
+{
+    jBC: REDO.V.BEF.AUT.PRINT.DSLIP
+}
+
+
+
+public method redoVCantCk (
+)
+{
+    jBC: REDO.V.CANT.CK
+}
+
+
+
+public method redoVCardConversion (
+)
+{
+    jBC: REDO.V.CARD.CONVERSION
+}
+
+
+
+public method redoVCashFields2 (
+)
+{
+    jBC: REDO.V.CASH.FIELDS2
+}
+
+
+
+public method redoVCatLoad (
+)
+{
+    jBC: REDO.V.CAT.LOAD
+}
+
+
+
+public method redoVCatVaultAcct (
+)
+{
+    jBC: REDO.V.CAT.VAULT.ACCT
+}
+
+
+
+public method redoVChkChqNum (
+)
+{
+    jBC: REDO.V.CHK.CHQ.NUM
+}
+
+
+
+public method redoVChkChqTeller (
+)
+{
+    jBC: REDO.V.CHK.CHQ.TELLER
+}
+
+
+
+public method redoVChkDefIntAcct (
+)
+{
+    jBC: REDO.V.CHK.DEF.INT.ACCT
+}
+
+
+
+public method redoVChkDefIntAcctSap (
+)
+{
+    jBC: REDO.V.CHK.DEF.INT.ACCT.SAP
+}
+
+
+
+public method redoVChkDelReason (
+)
+{
+    jBC: REDO.V.CHK.DEL.REASON
+}
+
+
+
+public method redoVChkNoOverdue (
+)
+{
+    jBC: REDO.V.CHK.NO.OVERDUE
+}
+
+
+
+public method redoVChkNostro (
+)
+{
+    jBC: REDO.V.CHK.NOSTRO
+}
+
+
+
+public method redoVChkOthTtBox (
+)
+{
+    jBC: REDO.V.CHK.OTH.TT.BOX
+}
+
+
+
+public method redoVChkPriDecRes (
+)
+{
+    jBC: REDO.V.CHK.PRI.DEC.RES
+}
+
+
+
+public method redoVCrAuthUpdNcf (
+)
+{
+    jBC: REDO.V.CR.AUTH.UPD.NCF
+}
+
+
+
+public method redoVCrDefClearingAc (
+)
+{
+    jBC: REDO.V.CR.DEF.CLEARING.AC
+}
+
+
+
+public method redoVDcAuthUpdNcf (
+)
+{
+    jBC: REDO.V.DC.AUTH.UPD.NCF
+}
+
+
+
+public method redoVDefTempInternalAcct (
+)
+{
+    jBC: REDO.V.DEF.TEMP.INTERNAL.ACCT
+}
+
+
+
+public method redoVDefTempStatusCondDisb (
+)
+{
+    jBC: REDO.V.DEF.TEMP.STATUS.COND.DISB
+}
+
+
+
+public method redoVDefTtLoanStatusCond (
+)
+{
+    jBC: REDO.V.DEF.TT.LOAN.STATUS.COND
+}
+
+
+
+public method redoVDefVaultAcct (
+)
+{
+    jBC: REDO.V.DEF.VAULT.ACCT
+}
+
+
+
+public method redoVDefaultAcctNos (
+)
+{
+    jBC: REDO.V.DEFAULT.ACCT.NOS
+}
+
+
+
+public method redoVDelAvailability (
+    INOUT delId string
+)
+{
+    jBC: REDO.V.DEL.AVAILABILITY
+}
+
+
+
+public method redoVDelAvailabilityLoad (
+)
+{
+    jBC: REDO.V.DEL.AVAILABILITY.LOAD
+}
+
+
+
+public method redoVDelAvailabilitySelect (
+)
+{
+    jBC: REDO.V.DEL.AVAILABILITY.SELECT
+}
+
+
+
+public method redoVDisdelay (
+)
+{
+    jBC: REDO.V.DISDELAY
+}
+
+
+
+public method redoVDraftCheckVal (
+)
+{
+    jBC: REDO.V.DRAFT.CHECK.VAL
+}
+
+
+
+public method redoVFtAchLoanStatusCond (
+)
+{
+    jBC: REDO.V.FT.ACH.LOAN.STATUS.COND
+}
+
+
+
+public method redoVFtArcCalcComm (
+)
+{
+    jBC: REDO.V.FT.ARC.CALC.COMM
+}
+
+
+
+public method redoVFtChargeHandling (
+)
+{
+    jBC: REDO.V.FT.CHARGE.HANDLING
+}
+
+
+
+public method redoVFtWvCommTax (
+)
+{
+    jBC: REDO.V.FT.WV.COMM.TAX
+}
+
+
+
+public method redoVHotContextAzMethod (
+)
+{
+    jBC: REDO.V.HOT.CONTEXT.AZ.METHOD
+}
+
+
+
+public method redoVIProfitCentre (
+)
+{
+    jBC: REDO.V.I.PROFIT.CENTRE
+}
+
+
+
+public method redoVIdBlkUser (
+)
+{
+    jBC: REDO.V.ID.BLK.USER
+}
+
+
+
+public method redoVIdCollStat (
+)
+{
+    jBC: REDO.V.ID.COLL.STAT
+}
+
+
+
+public method redoVIdConenqAcct (
+)
+{
+    jBC: REDO.V.ID.CONENQ.ACCT
+}
+
+
+
+public method redoVInpAcctRbhp (
+)
+{
+    jBC: REDO.V.INP.ACCT.RBHP
+}
+
+
+
+public method redoVInpAcctRbhpGen (
+)
+{
+    jBC: REDO.V.INP.ACCT.RBHP.GEN
+}
+
+
+
+public method redoVInpAcctRestChk (
+)
+{
+    jBC: REDO.V.INP.ACCT.REST.CHK
+}
+
+
+
+public method redoVInpAclCheckAcc (
+)
+{
+    jBC: REDO.V.INP.ACL.CHECK.ACC
+}
+
+
+
+public method redoVInpArcMandOverride (
+)
+{
+    jBC: REDO.V.INP.ARC.MAND.OVERRIDE
+}
+
+
+
+public method redoVInpCalcCharge (
+)
+{
+    jBC: REDO.V.INP.CALC.CHARGE
+}
+
+
+
+public method redoVInpCalcChekDigit (
+)
+{
+    jBC: REDO.V.INP.CALC.CHEK.DIGIT
+}
+
+
+
+public method redoVInpCalcTaxAmount (
+)
+{
+    jBC: REDO.V.INP.CALC.TAX.AMOUNT
+}
+
+
+
+public method redoVInpCalcTaxAmt (
+)
+{
+    jBC: REDO.V.INP.CALC.TAX.AMT
+}
+
+
+
+public method redoVInpCancellation (
+)
+{
+    jBC: REDO.V.INP.CANCELLATION
+}
+
+
+
+public method redoVInpCheckFtBeneficary (
+)
+{
+    jBC: REDO.V.INP.CHECK.FT.BENEFICARY
+}
+
+
+
+public method redoVInpCheckOutstandingAmt (
+)
+{
+    jBC: REDO.V.INP.CHECK.OUTSTANDING.AMT
+}
+
+
+
+public method redoVInpCheckPay (
+)
+{
+    jBC: REDO.V.INP.CHECK.PAY
+}
+
+
+
+public method redoVInpCheckPaymnt (
+)
+{
+    jBC: REDO.V.INP.CHECK.PAYMNT
+}
+
+
+
+public method redoVInpCheckRepAmt (
+)
+{
+    jBC: REDO.V.INP.CHECK.REP.AMT
+}
+
+
+
+public method redoVChkSingleOverdue (
+)
+{
+    jBC: REDO.V.CHK.SINGLE.OVERDUE
+}
+
+
+
+public method redoVChkTtBillCond (
+)
+{
+    jBC: REDO.V.CHK.TT.BILL.COND
+}
+
+
+
+public method redoVConvAdminDesc (
+)
+{
+    jBC: REDO.V.CONV.ADMIN.DESC
+}
+
