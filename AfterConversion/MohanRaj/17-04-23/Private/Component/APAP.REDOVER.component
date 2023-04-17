@@ -1,0 +1,476 @@
+component APAP.REDOVER
+# Component Isolation Definition
+metamodelVersion 1.6
+# -------------------------------------------------
+
+public method redoVInpChkBenfic (
+)
+{
+    jBC: REDO.V.INP.CHK.BENFIC
+}
+
+
+
+public method redoVInpChkLt (
+)
+{
+    jBC: REDO.V.INP.CHK.LT
+}
+
+
+
+public method redoVInpChkNcf (
+)
+{
+    jBC: REDO.V.INP.CHK.NCF
+}
+
+
+
+public method redoVInpClaimDateResol (
+)
+{
+    jBC: REDO.V.INP.CLAIM.DATE.RESOL
+}
+
+
+
+public method redoVInpClaimRecpDate (
+)
+{
+    jBC: REDO.V.INP.CLAIM.RECP.DATE
+}
+
+
+
+public method redoVInpClaimRiskLevel (
+)
+{
+    jBC: REDO.V.INP.CLAIM.RISK.LEVEL
+}
+
+
+
+public method redoVInpCollExpiry (
+)
+{
+    jBC: REDO.V.INP.COLL.EXPIRY
+}
+
+
+
+public method redoVInpComName (
+)
+{
+    jBC: REDO.V.INP.COM.NAME
+}
+
+
+
+public method redoVInpComplaintCharge (
+)
+{
+    jBC: REDO.V.INP.COMPLAINT.CHARGE
+}
+
+
+
+public method redoVInpCrAccCheck (
+)
+{
+    jBC: REDO.V.INP.CR.ACC.CHECK
+}
+
+
+
+public method redoVInpCusProvCheck (
+)
+{
+    jBC: REDO.V.INP.CUS.PROV.CHECK
+}
+
+
+
+public method redoVInpCustEndDate (
+)
+{
+    jBC: REDO.V.INP.CUST.END.DATE
+}
+
+
+
+public method redoVInpCustRtn (
+)
+{
+    jBC: REDO.V.INP.CUST.RTN
+}
+
+
+
+public method redoVInpDfltPrinAmt (
+)
+{
+    jBC: REDO.V.INP.DFLT.PRIN.AMT
+}
+
+
+
+public method redoVInpDisBillCond (
+)
+{
+    jBC: REDO.V.INP.DIS.BILL.COND
+}
+
+
+
+public method redoVInpDisbCondOvrde (
+)
+{
+    jBC: REDO.V.INP.DISB.COND.OVRDE
+}
+
+
+
+public method redoVInpDisburseOti (
+)
+{
+    jBC: REDO.V.INP.DISBURSE.OTI
+}
+
+
+
+public method redoVInpDispMsg (
+)
+{
+    jBC: REDO.V.INP.DISP.MSG
+}
+
+
+
+public method redoVInpFrDocReceived (
+)
+{
+    jBC: REDO.V.INP.FR.DOC.RECEIVED
+}
+
+
+
+public method redoVInpFrReqCharge (
+)
+{
+    jBC: REDO.V.INP.FR.REQ.CHARGE
+}
+
+
+
+public method redoVInpFtCheckAcc (
+)
+{
+    jBC: REDO.V.INP.FT.CHECK.ACC
+}
+
+
+
+public method redoVInpFtDrAccCheck (
+)
+{
+    jBC: REDO.V.INP.FT.DR.ACC.CHECK
+}
+
+
+
+public method redoVInpFtDrAccCheck1 (
+)
+{
+    jBC: REDO.V.INP.FT.DR.ACC.CHECK1
+}
+
+
+
+public method redoVInpGarnishmentDel (
+)
+{
+    jBC: REDO.V.INP.GARNISHMENT.DEL
+}
+
+
+
+public method redoVInpGarnishmentLock (
+)
+{
+    jBC: REDO.V.INP.GARNISHMENT.LOCK
+}
+
+
+
+public method redoVInpGetPayDate (
+)
+{
+    jBC: REDO.V.INP.GET.PAY.DATE
+}
+
+
+
+public method redoVInpIntRate (
+)
+{
+    jBC: REDO.V.INP.INT.RATE
+}
+
+
+
+public method redoVInpInternalReference (
+)
+{
+    jBC: REDO.V.INP.INTERNAL.REFERENCE
+}
+
+
+
+public method redoVInpMethodOfPay (
+)
+{
+    jBC: REDO.V.INP.METHOD.OF.PAY
+}
+
+
+
+public method redoVInpMethodVal (
+)
+{
+    jBC: REDO.V.INP.METHOD.VAL
+}
+
+
+
+public method redoVInpMgrStatusChk (
+)
+{
+    jBC: REDO.V.INP.MGR.STATUS.CHK
+}
+
+
+
+public method redoVInpModComments (
+)
+{
+    jBC: REDO.V.INP.MOD.COMMENTS
+}
+
+
+
+public method redoVInpNostroCatpl (
+)
+{
+    jBC: REDO.V.INP.NOSTRO.CATPL
+}
+
+
+
+public method redoVInpOvrTtlr (
+)
+{
+    jBC: REDO.V.INP.OVR.TTLR
+}
+
+
+
+public method redoVInpOvrUsrLim (
+)
+{
+    jBC: REDO.V.INP.OVR.USR.LIM
+}
+
+
+
+public method redoVInpOvride (
+)
+{
+    jBC: REDO.V.INP.OVRIDE
+}
+
+
+
+public method redoVInpOvrride (
+)
+{
+    jBC: REDO.V.INP.OVRRIDE
+}
+
+
+
+public method redoVInpPartDec (
+)
+{
+    jBC: REDO.V.INP.PART.DEC
+}
+
+
+
+public method redoVInpPrevClaimUnclosed (
+)
+{
+    jBC: REDO.V.INP.PREV.CLAIM.UNCLOSED
+}
+
+
+
+public method redoVInpPrevCompUnclosed (
+)
+{
+    jBC: REDO.V.INP.PREV.COMP.UNCLOSED
+}
+
+
+
+public method redoVInpPrevReqUnclosed (
+)
+{
+    jBC: REDO.V.INP.PREV.REQ.UNCLOSED
+}
+
+
+
+public method redoVInpPrintChqs (
+)
+{
+    jBC: REDO.V.INP.PRINT.CHQS
+}
+
+
+
+public method redoVInpProsPfCustRtn (
+)
+{
+    jBC: REDO.V.INP.PROS.PF.CUST.RTN
+}
+
+
+
+public method redoVInpReqDateResol (
+)
+{
+    jBC: REDO.V.INP.REQ.DATE.RESOL
+}
+
+
+
+public method redoVInpReqRecpDate (
+)
+{
+    jBC: REDO.V.INP.REQ.RECP.DATE
+}
+
+
+
+public method redoVInpReqRiskLevel (
+)
+{
+    jBC: REDO.V.INP.REQ.RISK.LEVEL
+}
+
+
+
+public method redoVInpRequestCharge (
+)
+{
+    jBC: REDO.V.INP.REQUEST.CHARGE
+}
+
+
+
+public method redoVInpRevIsstop (
+)
+{
+    jBC: REDO.V.INP.REV.ISSTOP
+}
+
+
+
+public method redoVInpSeriesCheck (
+)
+{
+    jBC: REDO.V.INP.SERIES.CHECK
+}
+
+
+
+public method redoVInpSeriesReceive (
+)
+{
+    jBC: REDO.V.INP.SERIES.RECEIVE
+}
+
+
+
+public method redoVInpSeriesReturn (
+)
+{
+    jBC: REDO.V.INP.SERIES.RETURN
+}
+
+
+
+public method redoVInpSetClaim (
+)
+{
+    jBC: REDO.V.INP.SET.CLAIM
+}
+
+
+
+public method redoVInpStoCheckAcc (
+)
+{
+    jBC: REDO.V.INP.STO.CHECK.ACC
+}
+
+
+
+public method redoVInpStoChkPay (
+)
+{
+    jBC: REDO.V.INP.STO.CHK.PAY
+}
+
+
+
+public method redoVInpStopPayStatus (
+)
+{
+    jBC: REDO.V.INP.STOP.PAY.STATUS
+}
+
+
+
+public method redoVInpSunnelUpdate (
+)
+{
+    jBC: REDO.V.INP.SUNNEL.UPDATE
+}
+
+
+
+public method redoVInpSupOvrAi (
+)
+{
+    jBC: REDO.V.INP.SUP.OVR.AI
+}
+
+
+
+public method redoVInpThrowOver (
+)
+{
+    jBC: REDO.V.INP.THROW.OVER
+}
+
+
+
+
+public method redoVInpTillLimit (
+)
+{
+    jBC: REDO.V.INP.TILL.LIMIT
+}
+

@@ -1,0 +1,293 @@
+* @ValidationCode : MjoxODQ1NzI0NTUwOkNwMTI1MjoxNjgxNzI2NTY1NzYxOjkxNjM4Oi0xOi0xOjA6MDpmYWxzZTpOL0E6UjIxX0FNUi4wOi0xOi0x
+* @ValidationInfo : Timestamp         : 17 Apr 2023 15:46:05
+* @ValidationInfo : Encoding          : Cp1252
+* @ValidationInfo : User Name         : 91638
+* @ValidationInfo : Nb tests success  : N/A
+* @ValidationInfo : Nb tests failure  : N/A
+* @ValidationInfo : Rating            : N/A
+* @ValidationInfo : Coverage          : N/A
+* @ValidationInfo : Strict flag       : N/A
+* @ValidationInfo : Bypass GateKeeper : false
+* @ValidationInfo : Compiler Version  : R21_AMR.0
+* @ValidationInfo : Copyright Temenos Headquarters SA 1993-2021. All rights reserved.
+$PACKAGE APAP.REDOVER
+SUBROUTINE REDO.V.INP.CHK.LT
+******************************************************************************
+*Company   Name    : ASOCIACION POPULAR DE AHORROS Y PRESTAMOS
+*Developed By      : PRABHU N
+*Program   Name    : REDO.V.INP.CHK.LT
+*-----------------------------------------------------------------------------
+*Description       : Creating Override for various teller transaction.It is
+*                    performed by comparing the balance after transaction
+*                    against maximum and minimum limit
+*Modification history
+*Date                Who               Reference                  Description
+*17-04-2023      conversion tool     R22 Auto code conversion    CONVERT TO CHANGE,= TO EQ,VM TO @VM,FM TO @FM,SM TO @SM
+*17-04-2023      Mohanraj R          R22 Manual code conversion   No changes
+*-----------------------------------------------------------------------------
+    $INSERT I_COMMON
+    $INSERT I_EQUATE
+    $INSERT I_F.TELLER
+    $INSERT I_F.TELLER.ID
+    $INSERT I_F.ACCOUNT
+    $INSERT I_F.TOLERANCE.CATEG.RANGE
+*Tus Start
+    $INSERT I_F.EB.CONTRACT.BALANCES
+*Tus End
+
+    GOSUB INIT
+    GOSUB INIT.CURRENT.REC
+    GOSUB LOC.POS
+    GOSUB FILE.READ
+    GOSUB DECISION
+    GOSUB PROCESSCASE
+
+*---*
+INIT:
+*----*
+    FN.ACCOUNT='F.ACCOUNT'
+    F.ACCOUNT=''
+    R.TELLER.REC=''
+    R.ACC.REC=''
+    R.TELLER.REC.1=''
+    R.TELLER.REC.2=''
+    R.ACC.REC.1=''
+    R.ACC.REC.2=''
+    Y.FLAG=''
+    CUR.POS=''
+    CUR1.POS=''
+    CUR2.POS=''
+    MIN.LIMIT=''
+    MAX.LIMIT=''
+    EXP.BALANCE=''
+    TILL.CUR.POS=''
+    BRANCH.CUR.POS=''
+RETURN
+*---------------*
+INIT.CURRENT.REC:
+*---------------*
+    CALL OPF(FN.ACCOUNT,F.ACCOUNT)
+
+    TRANS.CODE=R.NEW(TT.TE.TRANSACTION.CODE)
+    TELLER.ID.1=R.NEW(TT.TE.TELLER.ID.1)
+    TELLER.ID.2=R.NEW(TT.TE.TELLER.ID.2)
+    ACCOUNT.ID.1=R.NEW(TT.TE.ACCOUNT.1)
+    ACCOUNT.ID.2=R.NEW(TT.TE.ACCOUNT.2)
+    IF R.NEW(TT.TE.AMOUNT.FCY.1) NE '' THEN
+        AMOUNT.LOC.1=R.NEW(TT.TE.AMOUNT.FCY.1)
+    END
+    ELSE
+        AMOUNT.LOC.1=R.NEW(TT.TE.AMOUNT.LOCAL.1)
+    END
+RETURN
+*------*
+LOC.POS:
+*------*
+    LREF.APP = 'TELLER.ID'
+    LREF.FIELDS = 'L.TT.BRAN.LIM':@VM:'L.TT.MIN.BR.LIM':@VM:'L.TT.MAX.BR.LIM':@VM:'L.TT.TILL.LIM':@VM:'L.TT.MIN.TL.LIM':@VM:'L.TT.MAX.TL.LIM':@VM:'L.TT.MN.VAU.LIM':@VM:'L.TT.MIN.LIM':@VM:'L.TT.MAX.LIM':@VM:'L.TT.CURRENCY':@VM:'L.TT.TOL.CAT.RG'
+    CALL MULTI.GET.LOC.REF(LREF.APP,LREF.FIELDS,LREF.POS)
+    L.TT.BRAN.LIM.POS = LREF.POS<1,1>
+    L.TT.MIN.BR.LIM.POS = LREF.POS<1,2>
+    L.TT.MAX.BR.LIM.POS = LREF.POS<1,3>
+    L.TT.TILL.LIM.POS = LREF.POS<1,4>
+    L.TT.MIN.TL.LIM.POS = LREF.POS<1,5>
+    L.TT.MAX.TL.LIM.POS = LREF.POS<1,6>
+    L.TT.MN.VAU.LIM.POS = LREF.POS<1,7>
+    L.TT.MIN.LIM.POS = LREF.POS<1,8>
+    L.TT.MAX.LIM.POS = LREF.POS<1,9>
+    L.TT.CURRENCY.POS= LREF.POS<1,10>
+    L.TT.TOL.CAT.RG.POS=LREF.POS<1,11>
+    FN.TELLER='F.TELLER.ID'
+    F.TELLER=''
+    CALL OPF(FN.TELLER,F.TELLER)
+RETURN
+*--------*
+FILE.READ:
+*--------*
+    CALL F.READ(FN.TELLER,TELLER.ID.1,R.TELLER.REC.1,F.TELLER,ERR.1)
+    CALL F.READ(FN.TELLER,TELLER.ID.2,R.TELLER.REC.2,F.TELLER,ERR.2)
+    CALL F.READ(FN.ACCOUNT,ACCOUNT.ID.1,R.ACC.REC.1,F.ACCOUNT,ACC1.ERR)
+    CALL F.READ(FN.ACCOUNT,ACCOUNT.ID.2,R.ACC.REC.2,F.ACCOUNT,ACC2.ERR)
+    READ.ECB.REC.1='';ECB.ERR.1='';READ.ECB.REC.2='';ECB.ERR.2='';READ.ECB.REC='';R.BRANCH.ECB.REC='';R.TILL.ECB.REC='';*Tus Start
+    CALL EB.READ.HVT('EB.CONTRACT.BALANCES',ACCOUNT.ID.1,READ.ECB.REC.1,ECB.ERR.1)
+    CALL EB.READ.HVT('EB.CONTRACT.BALANCES',ACCOUNT.ID.2,READ.ECB.REC.2,ECB.ERR.2);*Tus End
+
+RETURN
+*--------*
+DECISION:
+*--------*
+
+    CUR1.LIST=R.TELLER.REC.1<TT.TID.LOCAL.REF,L.TT.CURRENCY.POS>
+    CUR1.SIZE=DCOUNT(CUR1.LIST,@SM)
+    CHANGE @SM TO @FM IN CUR1.LIST
+    LOCATE R.NEW(TT.TE.CURRENCY.1) IN CUR1.LIST SETTING CUR1.POS ELSE CUR1.POS='' ;*R22 Auto code conversion
+    CUR2.LIST=R.TELLER.REC.2<TT.TID.LOCAL.REF,L.TT.CURRENCY.POS>
+    CUR2.SIZE=DCOUNT(CUR2.LIST,@SM)
+    CHANGE @SM TO @FM IN CUR2.LIST
+    LOCATE R.NEW(TT.TE.CURRENCY.2) IN CUR2.LIST SETTING CUR2.POS ELSE CUR2.POS='' ;*R22 Auto code conversion
+    IF R.TELLER.REC.1<TT.TID.LOCAL.REF><1,L.TT.MN.VAU.LIM.POS,CUR1.POS> NE "" THEN
+        Y.FLAG="ONE"
+        R.TELLER.REC=R.TELLER.REC.1
+*Tus Start
+        READ.ECB.REC = READ.ECB.REC.1;*Tus End
+        R.ACC.REC=R.ACC.REC.1
+        CUR.POS=CUR1.POS
+    END
+    ELSE ;*R22 Auto code conversion
+        IF R.TELLER.REC.2<TT.TID.LOCAL.REF><1,L.TT.MN.VAU.LIM.POS,CUR2.POS> NE "" THEN
+            Y.FLAG="ONE"
+            R.TELLER.REC=R.TELLER.REC.2
+*Tus Start
+            READ.ECB.REC = READ.ECB.REC.2;*Tus End
+            R.ACC.REC=R.ACC.REC.2
+            AMOUNT.LOC.1=0-AMOUNT.LOC.1
+            CUR.POS=CUR2.POS
+        END
+        ELSE
+            GOSUB DE.BRANCH
+        END
+    END ;*R22 Auto code conversion
+RETURN
+*--------*
+DE.BRANCH:
+*--------*
+    IF R.TELLER.REC.1<TT.TID.LOCAL.REF><1,L.TT.BRAN.LIM.POS,CUR1.POS> NE "" AND R.NEW(TT.TE.DR.CR.MARKER) EQ "CREDIT" THEN
+
+        GOSUB BR.CREDIT
+    END
+    ELSE ;*R22 Auto code conversion
+        IF R.TELLER.REC.2<TT.TID.LOCAL.REF><1,L.TT.BRAN.LIM.POS,CUR2.POS> NE "" AND R.NEW(TT.TE.DR.CR.MARKER) EQ "DEBIT" THEN
+            GOSUB BR.DEBIT
+        END
+        ELSE
+            GOSUB DE.TILL
+        END ;*R22 Auto code conversion
+    END
+RETURN
+*--------*
+DE.TILL:
+*--------*
+    IF R.TELLER.REC.1<TT.TID.LOCAL.REF><1,L.TT.TILL.LIM.POS,CUR1.POS> EQ R.TELLER.REC.2<TT.TID.LOCAL.REF><1,L.TT.TILL.LIM.POS,CUR2.POS> THEN
+        Y.FLAG="THREE"
+    END
+    ELSE ;*R22 Auto code conversion
+        IF R.TELLER.REC.2<TT.TID.LOCAL.REF><1,L.TT.TILL.LIM.POS,CUR2.POS> NE "" THEN
+            Y.FLAG="FOUR"
+        END ;*R22 Auto code conversion
+    END
+RETURN
+*--------*
+BR.CREDIT:
+*--------*
+    R.BRANCH.ACC.REC=R.ACC.REC.1
+*Tus Start
+    R.BRANCH.ECB.REC=READ.ECB.REC.1;*Tus End
+    R.BRANCH.LIM.REC=R.TELLER.REC.1
+    BRANCH.CUR.POS=CUR1.POS
+    R.TILL.ACC.REC=R.ACC.REC.2
+    R.TILL.LIM.REC=R.TELLER.REC.2
+    TILL.CUR.POS=CUR2.POS
+    Y.FLAG="TWO"
+RETURN
+*--------*
+BR.DEBIT:
+*--------*
+    R.BRANCH.ACC.REC=R.ACC.REC.2
+    R.BRANCH.LIM.REC=R.TELLER.REC.2
+    BRANCH.CUR.POS=CUR2.POS
+    R.TILL.ACC.REC=R.ACC.REC.1
+*Tus Start
+    R.TILL.ECB.REC=READ.ECB.REC.1;*Tus End
+    R.TILL.LIM.REC=R.TELLER.REC.1
+    TILL.CUR.POS=CUR1.POS
+    Y.FLAG="TWO"
+RETURN
+*----------*
+PROCESSCASE:
+*----------*
+    BEGIN CASE
+        CASE Y.FLAG EQ "ONE" ;*R22 Auto code conversion
+            IF R.NEW(TT.TE.DR.CR.MARKER) EQ "CREDIT" THEN
+*   VAULT.EXP.BALANCE=R.ACC.REC<AC.WORKING.BALANCE>+AMOUNT.LOC.1;*Tus Start
+                VAULT.EXP.BALANCE=READ.ECB.REC<ECB.WORKING.BALANCE>+AMOUNT.LOC.1;*Tus End
+            END
+            ELSE
+*    VAULT.EXP.BALANCE=R.ACC.REC<AC.WORKING.BALANCE>-AMOUNT.LOC.1;*Tus Start
+                VAULT.EXP.BALANCE=READ.ECB.REC<ECB.WORKING.BALANCE>-AMOUNT.LOC.1;*Tus End
+            END
+            IF CUR.POS NE '' THEN
+                MIN.LIMIT=R.TELLER.REC<TT.TID.LOCAL.REF><1,L.TT.MIN.LIM.POS,CUR.POS>
+                MAX.LIMIT=R.TELLER.REC<TT.TID.LOCAL.REF><1,L.TT.MAX.LIM.POS,CUR.POS>
+                TT.TE.CURRENCY=R.TELLER.REC<TT.TID.LOCAL.REF><1,L.TT.CURRENCY.POS,CUR.POS>
+                EXP.BALANCE=0-VAULT.EXP.BALANCE
+                GOSUB OVERRIDES
+            END
+
+        CASE Y.FLAG EQ "TWO" ;*R22 Auto code conversion
+*   BRANCH.EXP.BALANCE=R.BRANCH.ACC.REC<AC.WORKING.BALANCE>+AMOUNT.LOC.1;*Tus Start
+            BRANCH.EXP.BALANCE=R.BRANCH.ECB.REC<ECB.WORKING.BALANCE>+AMOUNT.LOC.1;*Tus End
+            GOSUB BRANCH.LIMIT
+*   TILL.EXP.BALANCE=R.TILL.ACC.REC<AC.WORKING.BALANCE>-AMOUNT.LOC.1;*Tus Start
+            TILL.EXP.BALANCE=R.TILL.ECB.REC<ECB.WORKING.BALANCE>-AMOUNT.LOC.1;*Tus End
+            GOSUB TILL.LIMIT
+
+        CASE Y.FLAG="THREE"
+            IF R.NEW(TT.TE.DR.CR.MARKER) EQ "DEBIT"  THEN
+*    TILL.EXP.BALANCE=R.ACC.REC.1<AC.WORKING.BALANCE>-AMOUNT.LOC.1;*Tus Start
+                TILL.EXP.BALANCE=READ.ECB.REC.1<ECB.WORKING.BALANCE>-AMOUNT.LOC.1;*Tus End
+            END
+            ELSE
+*    TILL.EXP.BALANCE=R.ACC.REC.1<AC.WORKING.BALANCE>+AMOUNT.LOC.1;*Tus Start
+                TILL.EXP.BALANCE=READ.ECB.REC.1<ECB.WORKING.BALANCE>+AMOUNT.LOC.1;*Tus End
+            END
+            R.TILL.LIM.REC=R.TELLER.REC.2
+            TILL.CUR.POS=CUR2.POS
+            GOSUB TILL.LIMIT
+        CASE Y.FLAG="FOUR"
+            IF R.NEW(TT.TE.DR.CR.MARKER) EQ "DEBIT"  THEN
+*    TILL.EXP.BALANCE=R.ACC.REC.2<AC.WORKING.BALANCE>+AMOUNT.LOC.1;*Tus Start
+                TILL.EXP.BALANCE=READ.ECB.REC.2<ECB.WORKING.BALANCE>+AMOUNT.LOC.1;*Tus End
+            END
+            R.TILL.LIM.REC=R.TELLER.REC.2
+            TILL.CUR.POS=CUR2.POS
+            GOSUB TILL.LIMIT
+    END CASE
+
+RETURN
+*-----------*
+BRANCH.LIMIT:
+*-----------*
+    IF BRANCH.CUR.POS NE '' THEN
+        MIN.LIMIT=R.BRANCH.LIM.REC<TT.TID.LOCAL.REF><1,L.TT.MIN.BR.LIM.POS,BRANCH.CUR.POS>
+        MAX.LIMIT= R.BRANCH.LIM.REC<TT.TID.LOCAL.REF><1,L.TT.MAX.BR.LIM.POS,BRANCH.CUR.POS>
+        TT.TE.CURRENCY=R.BRANCH.LIM.REC<TT.TID.LOCAL.REF><1,L.TT.CURRENCY.POS,BRANCH.CUR.POS>
+        EXP.BALANCE=0-BRANCH.EXP.BALANCE
+        GOSUB OVERRIDES
+    END
+RETURN
+*---------*
+TILL.LIMIT:
+*---------*
+    IF TILL.CUR.POS NE '' THEN
+        MIN.LIMIT=R.TILL.LIM.REC<TT.TID.LOCAL.REF><1,L.TT.MIN.TL.LIM.POS,TILL.CUR.POS>
+        MAX.LIMIT=R.TILL.LIM.REC<TT.TID.LOCAL.REF><1,L.TT.MAX.TL.LIM.POS,TILL.CUR.POS>
+        TT.TE.CURRENCY=R.TILL.LIM.REC<TT.TID.LOCAL.REF><1,L.TT.CURRENCY.POS,TILL.CUR.POS>
+        EXP.BALANCE=0-TILL.EXP.BALANCE
+        GOSUB OVERRIDES
+    END
+RETURN
+*--------*
+OVERRIDES:
+*--------*
+    IF EXP.BALANCE GT MAX.LIMIT AND MAX.LIMIT NE '' THEN
+        DIFF=EXP.BALANCE-MAX.LIMIT
+        TEXT="EXCEED.LIMIT":" ":"BY":" ":TT.TE.CURRENCY:DIFF
+        CALL STORE.OVERRIDE(CURR.NO)
+    END
+    IF EXP.BALANCE LT MIN.LIMIT AND MIN.LIMIT NE '' THEN
+        DIFF=MIN.LIMIT-EXP.BALANCE
+        TEXT="CASH.SHORTAGE":" ":"BY":" ":TT.TE.CURRENCY:DIFF
+        CALL STORE.OVERRIDE (CURR.NO)
+    END
+RETURN
+END
