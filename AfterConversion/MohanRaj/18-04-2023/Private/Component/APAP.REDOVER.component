@@ -1,0 +1,437 @@
+component APAP.REDOVER
+# Component Isolation Definition
+metamodelVersion 1.6
+# -------------------------------------------------
+
+
+
+
+public method redoVInpTtAcVal (
+)
+{
+   jBC: REDO.V.INP.TT.AC.VAL
+}
+
+
+
+public method redoVInpTtDrAccCheck (
+)
+{
+   jBC: REDO.V.INP.TT.DR.ACC.CHECK
+}
+
+
+
+public method redoVInpUsrLimError (
+)
+{
+   jBC: REDO.V.INP.USR.LIM.ERROR
+}
+
+
+
+public method redoVInpValidateAge (
+)
+{
+   jBC: REDO.V.INP.VALIDATE.AGE
+}
+
+
+
+public method redoVInpWaiveMgrtax (
+)
+{
+   jBC: REDO.V.INP.WAIVE.MGRTAX
+}
+
+
+
+public method redoVItemDescDisp (
+)
+{
+   jBC: REDO.V.ITEM.DESC.DISP
+}
+
+
+
+public method redoVItemDescDisp2 (
+)
+{
+   jBC: REDO.V.ITEM.DESC.DISP2
+}
+
+
+
+public method redoVModStoBen (
+)
+{
+   jBC: REDO.V.MOD.STO.BEN
+}
+
+
+
+public method redoVNextAvlSeries (
+)
+{
+   jBC: REDO.V.NEXT.AVL.SERIES
+}
+
+
+
+public method redoVNumInstColl (
+)
+{
+   jBC: REDO.V.NUM.INST.COLL
+}
+
+
+
+public method redoVOverrideFtWvComtax (
+)
+{
+   jBC: REDO.V.OVERRIDE.FT.WV.COMTAX
+}
+
+
+
+public method redoVPartPymtRule1Disb (
+)
+{
+   jBC: REDO.V.PART.PYMT.RULE1.DISB
+}
+
+
+
+public method redoVRedoVValMaxTotal (
+)
+{
+   jBC: REDO.V.REDO.V.VAL.MAX.TOTAL
+}
+
+
+
+public method redoVReinvAzAccBalTtFt (
+)
+{
+   jBC: REDO.V.REINV.AZ.ACC.BAL.TT.FT
+}
+
+
+
+public method redoVReinvAzAccRefTt (
+)
+{
+   jBC: REDO.V.REINV.AZ.ACC.REF.TT
+}
+
+
+
+public method redoVReinvAzAccRefFt (
+)
+{
+   jBC: REDO.V.REINV.AZ.ACC.REF.FT
+}
+
+
+
+public method redoVReinvCheckBalTt (
+)
+{
+   jBC: REDO.V.REINV.CHECK.BAL.TT
+}
+
+
+
+public method redoVStatusChk (
+)
+{
+   jBC: REDO.V.STATUS.CHK
+}
+
+
+
+public method redoVStoUpdNcf (
+   INOUT yFtId string,
+   INOUT yFtStatus string
+)
+{
+   jBC: REDO.V.STO.UPD.NCF
+}
+
+
+
+public method redoVStoUpdSunnel (
+   INOUT yFtId string,
+   INOUT yFtStatus string
+)
+{
+   jBC: REDO.V.STO.UPD.SUNNEL
+}
+
+
+
+public method redoVStoUpdTp (
+   INOUT yFtId string,
+   INOUT yFtStatus string
+)
+{
+   jBC: REDO.V.STO.UPD.TP
+}
+
+
+
+public method redoVStpCondCu (
+)
+{
+   jBC: REDO.V.STP.COND.CU
+}
+
+
+
+public method redoVTempAdvCntPay (
+)
+{
+   jBC: REDO.V.TEMP.ADV.CNT.PAY
+}
+
+
+
+public method redoVTempAdvNoIns (
+)
+{
+   jBC: REDO.V.TEMP.ADV.NO.INS
+}
+
+
+
+public method redoVTempAuthPymntVp (
+)
+{
+   jBC: REDO.V.TEMP.AUTH.PYMNT.VP
+}
+
+
+
+public method redoVTempCheckAdminType (
+)
+{
+   jBC: REDO.V.TEMP.CHECK.ADMIN.TYPE
+}
+
+
+
+public method redoVTempCrdAc (
+)
+{
+   jBC: REDO.V.TEMP.CRD.AC
+}
+
+
+
+public method redoVTempInternalReference (
+)
+{
+   jBC: REDO.V.TEMP.INTERNAL.REFERENCE
+}
+
+
+
+public method redoVTempPymntVp (
+)
+{
+   jBC: REDO.V.TEMP.PYMNT.VP
+}
+
+
+
+public method redoVTempRouCreditOverride (
+)
+{
+   jBC: REDO.V.TEMP.ROU.CREDIT.OVERRIDE
+}
+
+
+
+public method redoVTempUpdDisbRef (
+)
+{
+   jBC: REDO.V.TEMP.UPD.DISB.REF
+}
+
+
+
+public method redoVTtAuthUpdNcf (
+)
+{
+   jBC: REDO.V.TT.AUTH.UPD.NCF
+}
+
+
+
+public method redoVTtValVault (
+)
+{
+   jBC: REDO.V.TT.VAL.VAULT
+}
+
+
+
+public method redoVTxnInt (
+)
+{
+   jBC: REDO.V.TXN.INT
+}
+
+
+
+public method redoVUpdAcceptedStk (
+)
+{
+   jBC: REDO.V.UPD.ACCEPTED.STK
+}
+
+
+
+public method redoVUpdAtmLyUpd (
+)
+{
+   jBC: REDO.V.UPD.ATM.LY.UPD
+}
+
+
+
+public method redoVUpdLatamCardSeries (
+)
+{
+   jBC: REDO.V.UPD.LATAM.CARD.SERIES
+}
+
+
+
+public method redoVValAccountCategory (
+)
+{
+   jBC: REDO.V.VAL.ACCOUNT.CATEGORY
+}
+
+
+
+public method redoVValAccountInitial (
+)
+{
+   jBC: REDO.V.VAL.ACCOUNT.INITIAL
+}
+
+
+
+public method redoVValAccountSearchVp (
+)
+{
+   jBC: REDO.V.VAL.ACCOUNT.SEARCH.VP
+}
+
+
+
+public method redoVValAccountVp (
+)
+{
+   jBC: REDO.V.VAL.ACCOUNT.VP
+}
+
+
+
+public method redoVValAcctAltNumber (
+)
+{
+   jBC: REDO.V.VAL.ACCT.ALT.NUMBER
+}
+
+
+
+public method redoVValAdvAmt (
+)
+{
+   jBC: REDO.V.VAL.ADV.AMT
+}
+
+
+
+public method redoVValAdvCntPay (
+)
+{
+   jBC: REDO.V.VAL.ADV.CNT.PAY
+}
+
+
+
+public method redoVValAdvCntPayDisb (
+)
+{
+   jBC: REDO.V.VAL.ADV.CNT.PAY.DISB
+}
+
+
+
+public method redoVValAdvIvrPartCheck (
+)
+{
+   jBC: REDO.V.VAL.ADV.IVR.PART.CHECK
+}
+
+
+
+public method redoVValAdvNoIns (
+)
+{
+   jBC: REDO.V.VAL.ADV.NO.INS
+}
+
+
+
+public method redoVValArcibPartPymnt (
+)
+{
+   jBC: REDO.V.VAL.ARCIB.PART.PYMNT
+}
+
+
+
+public method redoVValAttemptAdd (
+)
+{
+   jBC: REDO.V.VAL.ATTEMPT.ADD
+}
+
+
+
+
+public method redoVValBalUpdate (
+)
+{
+   jBC: REDO.V.VAL.BAL.UPDATE
+}
+
+
+
+public method redoVValBenef (
+)
+{
+   jBC: REDO.V.VAL.BENEF
+}
+
+
+
+public method redoVValCalcPorVh (
+)
+{
+   jBC: REDO.V.VAL.CALC.POR.VH
+}
+
+
+
+public method redoVValCalctot (
+)
+{
+   jBC: REDO.V.VAL.CALCTOT
+}
+
