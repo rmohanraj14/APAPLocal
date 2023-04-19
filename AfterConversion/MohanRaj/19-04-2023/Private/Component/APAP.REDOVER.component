@@ -1,0 +1,365 @@
+component APAP.REDOVER
+# Component Isolation Definition
+metamodelVersion 1.6
+# -------------------------------------------------
+
+
+
+public method redoVValCalctotDi (
+)
+{
+   jBC: REDO.V.VAL.CALCTOT.DI
+}
+
+
+
+public method redoVValCancellation (
+)
+{
+   jBC: REDO.V.VAL.CANCELLATION
+}
+
+
+
+public method redoVValCardAcc (
+)
+{
+   jBC: REDO.V.VAL.CARD.ACC
+}
+
+
+
+public method redoVValChargeInitial (
+)
+{
+   jBC: REDO.V.VAL.CHARGE.INITIAL
+}
+
+
+
+public method redoVValCheckDueAdv (
+)
+{
+   jBC: REDO.V.VAL.CHECK.DUE.ADV
+}
+
+
+
+public method redoVValCheckEntries (
+)
+{
+   jBC: REDO.V.VAL.CHECK.ENTRIES
+}
+
+
+
+public method redoVValCheckStatus (
+)
+{
+   jBC: REDO.V.VAL.CHECK.STATUS
+}
+
+
+
+public method redoVValCheqStatus (
+)
+{
+   jBC: REDO.V.VAL.CHEQ.STATUS
+}
+
+
+
+public method redoVValClaimType (
+)
+{
+   jBC: REDO.V.VAL.CLAIM.TYPE
+}
+
+
+
+public method redoVValClearAcc (
+)
+{
+   jBC: REDO.V.VAL.CLEAR.ACC
+}
+
+
+
+public method redoVValCollCredito (
+)
+{
+   jBC: REDO.V.VAL.COLL.CREDITO
+}
+
+
+
+public method redoVValCollRight (
+)
+{
+   jBC: REDO.V.VAL.COLL.RIGHT
+}
+
+
+
+public method redoVValCollateral (
+)
+{
+   jBC: REDO.V.VAL.COLLATERAL
+}
+
+
+
+public method redoVValConvLcy (
+)
+{
+   jBC: REDO.V.VAL.CONV.LCY
+}
+
+
+
+public method redoVValCopyFec (
+)
+{
+   jBC: REDO.V.VAL.COPY.FEC
+}
+
+
+
+public method redoVValCrdAc (
+)
+{
+   jBC: REDO.V.VAL.CRD.AC
+}
+
+
+
+public method redoVValCrdDebValueDate (
+)
+{
+   jBC: REDO.V.VAL.CRD.DEB.VALUE.DATE
+}
+
+
+
+public method redoVValCredColl (
+)
+{
+   jBC: REDO.V.VAL.CRED.COLL
+}
+
+
+
+public method redoVValCuenClie (
+)
+{
+   jBC: REDO.V.VAL.CUEN.CLIE
+}
+
+
+
+public method redoVValCusInfo (
+)
+{
+   jBC: REDO.V.VAL.CUS.INFO
+}
+
+
+
+public method redoVValCustCredit (
+)
+{
+   jBC: REDO.V.VAL.CUST.CREDIT
+}
+
+
+
+public method redoVValCustId (
+)
+{
+   jBC: REDO.V.VAL.CUST.ID
+}
+
+
+
+public method redoVValCustacc (
+)
+{
+   jBC: REDO.V.VAL.CUSTACC
+}
+
+
+
+public method redoVValDateDeInst (
+)
+{
+   jBC: REDO.V.VAL.DATE.DE.INST
+}
+
+
+
+public method redoVValDateDepBr (
+)
+{
+   jBC: REDO.V.VAL.DATE.DEP.BR
+}
+
+
+
+public method redoVValDateDepInt (
+)
+{
+   jBC: REDO.V.VAL.DATE.DEP.INT
+}
+
+
+
+public method redoVValDateFs (
+)
+{
+   jBC: REDO.V.VAL.DATE.FS
+}
+
+
+
+public method redoVValDateTas (
+)
+{
+   jBC: REDO.V.VAL.DATE.TAS
+}
+
+
+
+public method redoVValDefCcy (
+)
+{
+   jBC: REDO.V.VAL.DEF.CCY
+}
+
+
+
+public method redoVValDefLimAmt (
+)
+{
+   jBC: REDO.V.VAL.DEF.LIM.AMT
+}
+
+
+
+public method redoVValDefLimAmtPrin (
+)
+{
+   jBC: REDO.V.VAL.DEF.LIM.AMT.PRIN
+}
+
+
+
+public method redoVValDefLimit (
+)
+{
+   jBC: REDO.V.VAL.DEF.LIMIT
+}
+
+
+
+public method redoVValDefTaxAmt (
+)
+{
+   jBC: REDO.V.VAL.DEF.TAX.AMT
+}
+
+
+
+public method redoVValDisburseLoan (
+)
+{
+   jBC: REDO.V.VAL.DISBURSE.LOAN
+}
+
+
+
+public method redoVValDispoColl (
+)
+{
+   jBC: REDO.V.VAL.DISPO.COLL
+}
+
+
+
+public method redoVValDispoInstru (
+)
+{
+   jBC: REDO.V.VAL.DISPO.INSTRU
+}
+
+
+
+public method redoVValDispoValida (
+)
+{
+   jBC: REDO.V.VAL.DISPO.VALIDA
+}
+
+
+
+public method redoVValDispoValidaDi (
+)
+{
+   jBC: REDO.V.VAL.DISPO.VALIDA.DI
+}
+
+
+
+public method redoVValFecVenTp (
+)
+{
+   jBC: REDO.V.VAL.FEC.VEN.TP
+}
+
+
+
+public method redoVValFhaValidate (
+)
+{
+   jBC: REDO.V.VAL.FHA.VALIDATE
+}
+
+
+
+public method redoVValFijoManual (
+)
+{
+   jBC: REDO.V.VAL.FIJO.MANUAL
+}
+
+
+
+public method redoVValFilCuenta (
+)
+{
+   jBC: REDO.V.VAL.FIL.CUENTA
+}
+
+
+
+public method redoVValFrClaimDocName (
+)
+{
+   jBC: REDO.V.VAL.FR.CLAIM.DOC.NAME
+}
+
+
+
+public method redoVValFrReqDocName (
+)
+{
+   jBC: REDO.V.VAL.FR.REQ.DOC.NAME
+}
+
+
+
+public method redoVValFrReqPrdtType (
+)
+{
+   jBC: REDO.V.VAL.FR.REQ.PRDT.TYPE
+}
+
