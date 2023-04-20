@@ -1,0 +1,486 @@
+component APAP.REDOVER
+# Component Isolation Definition
+metamodelVersion 1.6
+# -------------------------------------------------
+
+
+
+
+public method redoVValFrReqStatus (
+)
+{
+   jBC: REDO.V.VAL.FR.REQ.STATUS
+}
+
+
+
+public method redoVValFrReqTranDate (
+)
+{
+   jBC: REDO.V.VAL.FR.REQ.TRAN.DATE
+}
+
+
+
+public method redoVValFtAdjNostro (
+)
+{
+   jBC: REDO.V.VAL.FT.ADJ.NOSTRO
+}
+
+
+
+public method redoVValGetCusEnri (
+)
+{
+   jBC: REDO.V.VAL.GET.CUS.ENRI
+}
+
+
+
+public method redoVValGetGarBeneficiary (
+)
+{
+   jBC: REDO.V.VAL.GET.GAR.BENEFICIARY
+}
+
+
+
+public method redoVValIdClie (
+)
+{
+   jBC: REDO.V.VAL.ID.CLIE
+}
+
+
+
+public method redoVValIdGara (
+)
+{
+   jBC: REDO.V.VAL.ID.GARA
+}
+
+
+
+public method redoVValIdeGuar (
+)
+{
+   jBC: REDO.V.VAL.IDE.GUAR
+}
+
+
+
+public method redoVValIssueCheck (
+)
+{
+   jBC: REDO.V.VAL.ISSUE.CHECK
+}
+
+
+
+public method redoVValIssueClaimTranDate (
+)
+{
+   jBC: REDO.V.VAL.ISSUE.CLAIM.TRAN.DATE
+}
+
+
+
+public method redoVValIssueCompDescClaim (
+)
+{
+   jBC: REDO.V.VAL.ISSUE.COMP.DESC.CLAIM
+}
+
+
+
+public method redoVValIssueCompTranDate (
+)
+{
+   jBC: REDO.V.VAL.ISSUE.COMP.TRAN.DATE
+}
+
+
+
+public method redoVValLastNextRevDate (
+)
+{
+   jBC: REDO.V.VAL.LAST.NEXT.REV.DATE
+}
+
+
+
+public method redoVValLegalId (
+)
+{
+   jBC: REDO.V.VAL.LEGAL.ID
+}
+
+
+
+public method redoVValLimitCheck (
+)
+{
+   jBC: REDO.V.VAL.LIMIT.CHECK
+}
+
+
+
+public method redoVValLinkEmployee (
+)
+{
+   jBC: REDO.V.VAL.LINK.EMPLOYEE
+}
+
+
+
+public method redoVValLoanAcc (
+)
+{
+   jBC: REDO.V.VAL.LOAN.ACC
+}
+
+
+
+public method redoVValMd (
+)
+{
+   jBC: REDO.V.VAL.MD
+}
+
+
+
+public method redoVValMgrChkstatus (
+)
+{
+   jBC: REDO.V.VAL.MGR.CHKSTATUS
+}
+
+
+
+public method redoVValMgritemCode (
+)
+{
+   jBC: REDO.V.VAL.MGRITEM.CODE
+}
+
+
+
+public method redoVValModDispDi (
+)
+{
+   jBC: REDO.V.VAL.MOD.DISP.DI
+}
+
+
+
+public method redoVValMulSrcAcc (
+)
+{
+   jBC: REDO.V.VAL.MUL.SRC.ACC
+}
+
+
+
+public method redoVValOrdDeli (
+)
+{
+   jBC: REDO.V.VAL.ORD.DELI
+}
+
+
+
+public method redoVValOrdReciept (
+)
+{
+   jBC: REDO.V.VAL.ORD.RECIEPT
+}
+
+
+
+public method redoVValParamAutomExec (
+)
+{
+   jBC: REDO.V.VAL.PARAM.AUTOM.EXEC
+}
+
+
+
+public method redoVValParamEncript (
+)
+{
+   jBC: REDO.V.VAL.PARAM.ENCRIPT
+}
+
+
+
+public method redoVValPayAmt (
+)
+{
+   jBC: REDO.V.VAL.PAY.AMT
+}
+
+
+
+public method redoVValPopOurAcc (
+)
+{
+   jBC: REDO.V.VAL.POP.OUR.ACC
+}
+
+
+
+public method redoVValPrimaryAcc (
+)
+{
+   jBC: REDO.V.VAL.PRIMARY.ACC
+}
+
+
+
+public method redoVValPstopType (
+)
+{
+   jBC: REDO.V.VAL.PSTOP.TYPE
+}
+
+
+
+public method redoVValPymntVp (
+)
+{
+   jBC: REDO.V.VAL.PYMNT.VP
+}
+
+
+
+public method redoVValRaiseMgrovride (
+)
+{
+   jBC: REDO.V.VAL.RAISE.MGROVRIDE
+}
+
+
+
+public method redoVValReqSplDateResol (
+)
+{
+   jBC: REDO.V.VAL.REQ.SPL.DATE.RESOL
+}
+
+
+
+public method redoVValReqStatus (
+)
+{
+   jBC: REDO.V.VAL.REQ.STATUS
+}
+
+
+
+public method redoVValReqSubmSap (
+)
+{
+   jBC: REDO.V.VAL.REQ.SUBM.SAP
+}
+
+
+
+public method redoVValRequ (
+)
+{
+   jBC: REDO.V.VAL.REQU
+}
+
+
+
+public method redoVValSetCodgara (
+)
+{
+   jBC: REDO.V.VAL.SET.CODGARA
+}
+
+
+
+public method redoVValSetDeta (
+)
+{
+   jBC: REDO.V.VAL.SET.DETA
+}
+
+
+
+public method redoVValSetDetaVh (
+)
+{
+   jBC: REDO.V.VAL.SET.DETA.VH
+}
+
+
+
+public method redoVValSetMaxpVh (
+)
+{
+   jBC: REDO.V.VAL.SET.MAXP.VH
+}
+
+
+
+public method redoVValShaCode (
+)
+{
+   jBC: REDO.V.VAL.SHA.CODE
+}
+
+
+
+public method redoVValSteCommtal (
+)
+{
+   jBC: REDO.V.VAL.STE.COMMTAL
+}
+
+
+
+public method redoVValStoBenCard (
+)
+{
+   jBC: REDO.V.VAL.STO.BEN.CARD
+}
+
+
+
+public method redoVValStoPartPymnt (
+)
+{
+   jBC: REDO.V.VAL.STO.PART.PYMNT
+}
+
+
+
+public method redoVValStoSetRtn (
+)
+{
+   jBC: REDO.V.VAL.STO.SET.RTN
+}
+
+
+
+public method redoVValStoTpSetRtn (
+)
+{
+   jBC: REDO.V.VAL.STO.TP.SET.RTN
+}
+
+
+
+public method redoVValTrnYield (
+)
+{
+   jBC: REDO.V.VAL.TRN.YIELD
+}
+
+
+
+public method redoVValTtCheck (
+)
+{
+   jBC: REDO.V.VAL.TT.CHECK
+}
+
+
+
+public method redoVValTtTp (
+)
+{
+   jBC: REDO.V.VAL.TT.TP
+}
+
+
+
+public method redoVValTypGuarSoli (
+)
+{
+   jBC: REDO.V.VAL.TYP.GUAR.SOLI
+}
+
+
+
+public method redoVValTypeGrupo (
+)
+{
+   jBC: REDO.V.VAL.TYPE.GRUPO
+}
+
+
+
+public method redoVValValidaporcent (
+)
+{
+   jBC: REDO.V.VAL.VALIDAPORCENT
+}
+
+
+
+public method redoVValValues (
+)
+{
+   jBC: REDO.V.VAL.VALUES
+}
+
+
+
+public method redoVValValuesDe (
+)
+{
+   jBC: REDO.V.VAL.VALUES.DE
+}
+
+
+
+public method redoVValValuesDi (
+)
+{
+   jBC: REDO.V.VAL.VALUES.DI
+}
+
+
+
+public method redoVValValuesFs (
+)
+{
+   jBC: REDO.V.VAL.VALUES.FS
+}
+
+
+
+public method redoVValYrMonRaisErr (
+)
+{
+   jBC: REDO.V.VAL.YR.MON.RAIS.ERR
+}
+
+
+
+public method redoVValidateSettleAcc (
+)
+{
+   jBC: REDO.V.VALIDATE.SETTLE.ACC
+}
+
+
+
+public method redoVVerIntrfUpd (
+)
+{
+   jBC: REDO.V.VER.INTRF.UPD
+}
+
+
+
+public method redoVVerifyAuth (
+)
+{
+   jBC: REDO.V.VERIFY.AUTH
+}
+
