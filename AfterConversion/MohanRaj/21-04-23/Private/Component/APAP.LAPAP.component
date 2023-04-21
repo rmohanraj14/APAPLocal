@@ -1,0 +1,433 @@
+component APAP.LAPAP
+# Component Isolation Definition
+metamodelVersion 1.6
+# -------------------------------------------------
+
+
+private method lapapAzPaymetMethod2 (
+)
+{
+    jBC: LAPAP.AZ.PAYMET.METHOD2
+}
+
+
+
+private method lapapAzPaymetMethod3 (
+)
+{
+    jBC: LAPAP.AZ.PAYMET.METHOD3
+}
+
+
+
+private method lapapBBcrReportGenWof (
+    INOUT yAaId string,
+    INOUT yTotalCuotas string,
+    INOUT yLastpayAmt string,
+    INOUT yLastpayDat string,
+    INOUT yFinAmt string
+)
+{
+    jBC: LAPAP.B.BCR.REPORT.GEN.WOF
+}
+
+
+
+private method lapapBalanceDesSimu (
+)
+{
+    jBC: LAPAP.BALANCE.DES.SIMU
+}
+
+
+
+private method lapapBuildMonitorFromVersion (
+    INOUT arr string
+)
+{
+    jBC: LAPAP.BUILD.MONITOR.FROM.VERSION
+}
+
+
+
+private method lapapBuildMonitorLoad (
+    INOUT arr string
+)
+{
+    jBC: LAPAP.BUILD.MONITOR.LOAD
+}
+
+
+
+private method lapapBuildOfsFromVersion (
+    INOUT app string,
+    INOUT func string,
+    INOUT id string,
+    INOUT rss string
+)
+{
+    jBC: LAPAP.BUILD.OFS.FROM.VERSION
+}
+
+
+
+private method lapapBuildOfsLoad (
+    INOUT app string,
+    INOUT func string,
+    INOUT id string,
+    INOUT rss string
+)
+{
+    jBC: LAPAP.BUILD.OFS.LOAD
+}
+
+
+
+private method lapapBuscarPresWof (
+)
+{
+    jBC: LAPAP.BUSCAR.PRES.WOF
+}
+
+
+
+private method lapapCalcAgeRt (
+    INOUT startDate string,
+    INOUT endDate string,
+    INOUT outAge string
+)
+{
+    jBC: LAPAP.CALC.AGE.RT
+}
+
+
+
+private method lapapCambioEstado (
+)
+{
+    jBC: LAPAP.CAMBIO.ESTADO
+}
+
+
+
+private method lapapCampanaSumulation (
+)
+{
+    jBC: LAPAP.CAMPANA.SUMULATION
+}
+
+
+
+private method lapapCastigadosRuedaPost (
+)
+{
+    jBC: LAPAP.CASTIGADOS.RUEDA.POST
+}
+
+
+
+private method lapapCheckClosedPost (
+)
+{
+    jBC: LAPAP.CHECK.CLOSED.POST
+}
+
+
+
+private method lapapCheckTipidentFxsn (
+)
+{
+    jBC: LAPAP.CHECK.TIPIDENT.FXSN
+}
+
+
+
+private method lapapChkCusNameRt (
+)
+{
+    jBC: LAPAP.CHK.CUS.NAME.RT
+}
+
+
+
+private method lapapChkOccCustomer (
+)
+{
+    jBC: LAPAP.CHK.OCC.CUSTOMER
+}
+
+
+
+private method lapapClearEcbBalances (
+)
+{
+    jBC: LAPAP.CLEAR.ECB.BALANCES
+}
+
+
+
+private method lapapClearEcbBalancesPost (
+)
+{
+    jBC: LAPAP.CLEAR.ECB.BALANCES.POST
+}
+
+
+
+private method lapapClearEcbBalancesR15 (
+    INOUT yAaId string,
+    INOUT yInternaAccount string
+)
+{
+    jBC: LAPAP.CLEAR.ECB.BALANCES.R15
+}
+
+
+
+private method lapapClearEcbBalancesWof (
+)
+{
+    jBC: LAPAP.CLEAR.ECB.BALANCES.WOF
+}
+
+
+
+private method lapapClienteCierra (
+)
+{
+    jBC: LAPAP.CLIENTE.CIERRA
+}
+
+
+
+private method lapapClosClosdate (
+)
+{
+    jBC: LAPAP.CLOS.CLOSDATE
+}
+
+
+
+private method lapapClosIdent (
+)
+{
+    jBC: LAPAP.CLOS.IDENT
+}
+
+
+
+private method lapapClosJoint (
+)
+{
+    jBC: LAPAP.CLOS.JOINT
+}
+
+
+
+private method lapapCloseArrangement (
+)
+{
+    jBC: LAPAP.CLOSE.ARRANGEMENT
+}
+
+
+
+private method lapapCloseArrangementIn (
+    INOUT accId string
+)
+{
+    jBC: LAPAP.CLOSE.ARRANGEMENT.IN
+}
+
+
+
+private method lapapCloseArrangementWof (
+)
+{
+    jBC: LAPAP.CLOSE.ARRANGEMENT.WOF
+}
+
+
+
+private method lapapCobrosSegRevert (
+)
+{
+    jBC: LAPAP.COBROS.SEG.REVERT
+}
+
+
+
+private method lapapCobrosSegUnau (
+)
+{
+    jBC: LAPAP.COBROS.SEG.UNAU
+}
+
+
+
+private method lapapCorrigeCuentaAchRt (
+)
+{
+    jBC: LAPAP.CORRIGE.CUENTA.ACH.RT
+}
+
+
+
+private method lapapCorrigeTramaEntAchRt (
+    INOUT yInRow string,
+    INOUT yDelimiter string
+)
+{
+    jBC: LAPAP.CORRIGE.TRAMA.ENT.ACH.RT
+}
+
+
+
+private method lapapCusPepAuto (
+)
+{
+    jBC: LAPAP.CUS.PEP.AUTO
+}
+
+
+
+private method lapapCusRedoInfoAdiPfVal (
+)
+{
+    jBC: LAPAP.CUS.REDO.INFO.ADI.PF.VAL
+}
+
+
+
+private method lapapCusTutorByAccount (
+    INOUT accountNo string,
+    INOUT rCustomer string,
+    INOUT cusId string
+)
+{
+    jBC: LAPAP.CUS.TUTOR.BY.ACCOUNT
+}
+
+
+
+private method lapapCustomerEmploymentStatus (
+)
+{
+    jBC: LAPAP.CUSTOMER.EMPLOYMENT.STATUS
+}
+
+
+
+private method lapapCustomerId (
+    INOUT id string,
+    INOUT rs string
+)
+{
+    jBC: LAPAP.CUSTOMER.ID
+}
+
+
+
+private method lapapCustomerIdent (
+    INOUT customer string,
+    INOUT ident string,
+    INOUT identype string,
+    INOUT name string,
+    INOUT lastn string,
+    INOUT defv string
+)
+{
+    jBC: LAPAP.CUSTOMER.IDENT
+}
+
+
+
+private method lapapCustomerNonJointHolder (
+    INOUT accId string,
+    INOUT res string
+)
+{
+    jBC: LAPAP.CUSTOMER.NON.JOINT.HOLDER
+}
+
+
+
+private method lapapDefCustomerType (
+)
+{
+    jBC: LAPAP.DEF.CUSTOMER.TYPE
+}
+
+
+
+private method lapapDelCondRestructure (
+    INOUT arrId string
+)
+{
+    jBC: LAPAP.DEL.COND.RESTRUCTURE
+}
+
+
+
+private method lapapDelCondRestructureLoad (
+)
+{
+    jBC: LAPAP.DEL.COND.RESTRUCTURE.LOAD
+}
+
+
+
+private method lapapDelCondRestructureSelect (
+)
+{
+    jBC: LAPAP.DEL.COND.RESTRUCTURE.SELECT
+}
+
+
+
+private method lapapDelCusBenList (
+)
+{
+    jBC: LAPAP.DEL.CUS.BEN.LIST
+}
+
+
+
+private method lapapDelIdalternoCancelado (
+)
+{
+    jBC: LAPAP.DEL.IDALTERNO.CANCELADO
+}
+
+
+
+private method lapapDeleteCustPrdListLoad (
+)
+{
+    jBC: LAPAP.DELETE.CUST.PRD.LIST.LOAD
+}
+
+
+
+private method lapapDesmRuedaPost (
+)
+{
+    jBC: LAPAP.DESM.RUEDA.POST
+}
+
+
+
+private method lapapDesmRuedaTwoPost (
+)
+{
+    jBC: LAPAP.DESM.RUEDA.TWO.POST
+}
+
+
+
+private method lapapDiferenciaTasaIn (
+)
+{
+    jBC: LAPAP.DIFERENCIA.TASA.IN
+}
+
