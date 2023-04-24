@@ -1,0 +1,140 @@
+component APAP.LAPAP
+# Component Isolation Definition
+metamodelVersion 1.6
+# -------------------------------------------------
+
+
+
+
+
+public method lapapCastigadosRuedaPost (
+)
+{
+    jBC: LAPAP.CASTIGADOS.RUEDA.POST
+}
+
+
+
+public method lapapDesmRuedaPost (
+)
+{
+    jBC: LAPAP.DESM.RUEDA.POST
+}
+
+
+
+public method lapapDesmRuedaTwoPost (
+)
+{
+    jBC: LAPAP.DESM.RUEDA.TWO.POST
+}
+
+
+
+public method lapapEnqDop80017Rt (
+)
+{
+    jBC: LAPAP.ENQ.DOP80017.RT
+}
+
+
+
+public method lapapFaseiiCovidPost (
+)
+{
+    jBC: LAPAP.FASEII.COVID.POST
+}
+
+
+
+public method lapapFaseiiCuotaProg (
+)
+{
+    jBC: LAPAP.FASEII.CUOTA.PROG
+}
+
+
+
+public method lapapFd05IdValidator (
+)
+{
+    jBC: LAPAP.FD05.ID.VALIDATOR
+}
+
+
+
+public method lapapFindJointHolder (
+)
+{
+    jBC: LAPAP.FIND.JOINT.HOLDER
+}
+
+
+
+public method lapapFindJointHolder2 (
+)
+{
+    jBC: LAPAP.FIND.JOINT.HOLDER2
+}
+
+
+
+public method lapapFormPostRestrActivity (
+    INOUT aaId string
+)
+{
+    jBC: LAPAP.FORM.POST.RESTR.ACTIVITY
+}
+
+
+
+public method lapapGetCajeroUserRt (
+)
+{
+    jBC: LAPAP.GET.CAJERO.USER.RT
+}
+
+
+
+public method lapapGetCusByIdent (
+    INOUT rCustomer string,
+    INOUT cusIdent string,
+    INOUT identType string,
+    INOUT cusId string
+)
+{
+    jBC: LAPAP.GET.CUS.BY.IDENT
+}
+
+
+
+public method lapapGetCusMovilPhone (
+)
+{
+    jBC: LAPAP.GET.CUS.MOVIL.PHONE
+}
+
+
+
+public method lapapGetCusName (
+)
+{
+    jBC: LAPAP.GET.CUS.NAME
+}
+
+
+
+public method lapapGetDealticketInfoBuyRt (
+)
+{
+    jBC: LAPAP.GET.DEALTICKET.INFO.BUY.RT
+}
+
+
+
+public method lapapGetDealticketInfoRt (
+)
+{
+    jBC: LAPAP.GET.DEALTICKET.INFO.RT
+}
+
