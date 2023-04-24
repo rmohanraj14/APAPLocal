@@ -1,0 +1,198 @@
+component APAP.REDOSRTN
+# Component Isolation Definition
+metamodelVersion 1.6
+# -------------------------------------------------
+
+
+
+
+public method redoSGetSysDate (
+)
+{
+   jBC: REDO.S.GET.SYS.DATE
+}
+
+
+
+
+public method redoSGetTftCcy (
+   INOUT yOut string
+)
+{
+   jBC: REDO.S.GET.TFT.CCY
+}
+
+
+
+public method redoSGetTxnFcy (
+   INOUT txnFcy string
+)
+{
+   jBC: REDO.S.GET.TXN.FCY
+}
+
+
+
+
+public method redoSGetValDate (
+)
+{
+   jBC: REDO.S.GET.VAL.DATE
+}
+
+
+
+public method redoSNotifyInterfaceAct (
+   INOUT intCode string,
+   INOUT intType string,
+   INOUT monTp string,
+   INOUT desc string,
+   INOUT recCon string,
+   INOUT batNo string,
+   INOUT batTot string,
+   INOUT infoOr string,
+   INOUT infoDe string,
+   INOUT idProc string,
+   INOUT exUser string,
+   INOUT exPc string
+)
+{
+   jBC: REDO.S.NOTIFY.INTERFACE.ACT
+}
+
+
+
+public method redoSOpenFiles (
+)
+{
+   jBC: REDO.S.OPEN.FILES
+}
+
+
+
+public method redoSOperationType (
+   INOUT yOperationType string
+)
+{
+   jBC: REDO.S.OPERATION.TYPE
+}
+
+
+
+public method redoSPartPymtAut (
+)
+{
+   jBC: REDO.S.PART.PYMT.AUT
+}
+
+
+
+public method redoSPartPymtAut1 (
+)
+{
+   jBC: REDO.S.PART.PYMT.AUT1
+}
+
+
+
+public method redoSPaymentRule (
+)
+{
+   jBC: REDO.S.PAYMENT.RULE
+}
+
+
+
+public method redoSRejectDesc (
+   INOUT desc string
+)
+{
+   jBC: REDO.S.REJECT.DESC
+}
+
+
+
+public method redoSRepCustomerExtract (
+   INOUT yCustomerId string,
+   INOUT yProductGroup string,
+   INOUT yRelCode string,
+   INOUT outArr string
+)
+{
+   jBC: REDO.S.REP.CUSTOMER.EXTRACT
+}
+
+
+
+public method redoSTermAmount (
+)
+{
+   jBC: REDO.S.TERM.AMOUNT
+}
+
+
+
+public method redoSUpdCusActanac (
+   INOUT yCusId string
+)
+{
+   jBC: REDO.S.UPD.CUS.ACTANAC
+}
+
+
+
+public method redoSUpdCusActanacLoad (
+)
+{
+   jBC: REDO.S.UPD.CUS.ACTANAC.LOAD
+}
+
+
+
+public method redoSUpdCusActanacSelect (
+)
+{
+   jBC: REDO.S.UPD.CUS.ACTANAC.SELECT
+}
+
+
+
+public method redoSUpdCusLegalId (
+)
+{
+   jBC: REDO.S.UPD.CUS.LEGAL.ID
+}
+
+
+
+public method redoSUpdLoanPayoffDate (
+)
+{
+   jBC: REDO.S.UPD.LOAN.PAYOFF.DATE
+}
+
+
+
+public method redoSVerifyPunishLoan (
+   INOUT yResponse string
+)
+{
+   jBC: REDO.S.VERIFY.PUNISH.LOAN
+}
+
+
+
+public method redoSVpInitProcessDate (
+)
+{
+   jBC: REDO.S.VP.INIT.PROCESS.DATE
+}
+
+
+
+public method redoSWorkLimit (
+)
+{
+   jBC: REDO.S.WORK.LIMIT
+}
+
