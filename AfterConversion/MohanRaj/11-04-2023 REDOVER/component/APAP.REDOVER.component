@@ -1,0 +1,188 @@
+component APAP.REDOVER
+# Component Isolation Definition
+metamodelVersion 1.6
+# -------------------------------------------------
+public method redoInpIntRate (
+)
+{
+   jBC: REDO.INP.INT.RATE
+}
+
+
+
+public method redoInpIssuanceDate (
+)
+{
+   jBC: REDO.INP.ISSUANCE.DATE
+}
+
+
+
+public method redoInpItemCode (
+)
+{
+   jBC: REDO.INP.ITEM.CODE
+}
+
+
+
+public method redoInpReinvAzAccBalFtTax (
+)
+{
+   jBC: REDO.INP.REINV.AZ.ACC.BAL.FT.TAX
+}
+
+
+
+public method redoInpReprintDepOver (
+)
+{
+   jBC: REDO.INP.REPRINT.DEP.OVER
+}
+
+
+
+public method redoInpReqAltId (
+)
+{
+   jBC: REDO.INP.REQ.ALT.ID
+}
+
+
+
+public method redoInpStopPayStatus (
+)
+{
+   jBC: REDO.INP.STOP.PAY.STATUS
+}
+
+
+
+public method redoInpWriteOfsUnauthCob (
+)
+{
+   jBC: REDO.INP.WRITE.OFS.UNAUTH.COB
+}
+
+
+
+public method redoVAcUpdNcf (
+)
+{
+   jBC: REDO.V.AC.UPD.NCF
+}
+
+
+
+public method redoVAcctCategValidate (
+)
+{
+   jBC: REDO.V.ACCT.CATEG.VALIDATE
+}
+
+
+
+public method redoVAcctIdValidate (
+)
+{
+   jBC: REDO.V.ACCT.ID.VALIDATE
+}
+
+
+
+public method redoVAncAzReinvFreq (
+)
+{
+   jBC: REDO.V.ANC.AZ.REINV.FREQ
+}
+
+
+
+public method redoVAncBenefTxnCode (
+)
+{
+   jBC: REDO.V.ANC.BENEF.TXN.CODE
+}
+
+
+
+public method redoVAncClaimUpdStatus (
+)
+{
+   jBC: REDO.V.ANC.CLAIM.UPD.STATUS
+}
+
+
+
+public method redoVAncDefaultBeneficiary (
+)
+{
+   jBC: REDO.V.ANC.DEFAULT.BENEFICIARY
+}
+
+
+
+public method redoVAncDefaultTeller (
+)
+{
+   jBC: REDO.V.ANC.DEFAULT.TELLER
+}
+
+
+
+public method redoVAncDefaultstk (
+)
+{
+   jBC: REDO.V.ANC.DEFAULTSTK
+}
+
+
+
+public method redoVAncDmgEmboss (
+)
+{
+   jBC: REDO.V.ANC.DMG.EMBOSS
+}
+
+
+
+public method redoVAncFxsnVal (
+)
+{
+   jBC: REDO.V.ANC.FXSN.VAL
+}
+
+
+
+public method redoVAutAcLogUpdate (
+)
+{
+   jBC: REDO.V.AUT.AC.LOG.UPDATE
+}
+
+
+
+
+
+public method redoVAutAddCon (
+)
+{
+   jBC: REDO.V.AUT.ADD.CON
+}
+
+
+
+public method redoVAutAmendRelCust (
+)
+{
+   jBC: REDO.V.AUT.AMEND.REL.CUST
+}
+
+
+
+public method redoVAutAmlCcy (
+)
+{
+   jBC: REDO.V.AUT.AML.CCY
+}
+
