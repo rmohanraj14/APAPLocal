@@ -1,0 +1,68 @@
+component APAP.REDOSRTN
+# Component Isolation Definition
+metamodelVersion 1.6
+# -------------------------------------------------
+
+
+
+
+public method redoSCheckAmount (
+    INOUT chqAmt string
+)
+{
+    jBC: REDO.S.CHECK.AMOUNT
+}
+
+
+public method redoSGetCashAmount (
+    INOUT cashAmt string
+)
+{
+    jBC: REDO.S.GET.CASH.AMOUNT
+}
+
+
+
+public method redoSGetCusAccName (
+    INOUT customerName string
+)
+{
+    jBC: REDO.S.GET.CUS.ACC.NAME
+}
+
+
+
+
+public method redoSGetTfsTotAmt (
+    INOUT yTotalAmt string
+)
+{
+    jBC: REDO.S.GET.TFS.TOT.AMT
+}
+
+
+
+public method redoSRecAcctList (
+    INOUT yAcctId string,
+    INOUT yFinArray string
+)
+{
+    jBC: REDO.S.REC.ACCT.LIST
+}
+
+
+public method redoSCustomerName1 (
+    INOUT yOut string
+)
+{
+    jBC: REDO.S.CUSTOMER.NAME1
+	
+	
+	
+
+public method redoSCustomerName1Nv (
+    INOUT yOut string
+)
+{
+    jBC: REDO.S.CUSTOMER.NAME1.NV
+}
