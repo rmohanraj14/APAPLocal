@@ -1,0 +1,53 @@
+component APAP.REDOSRTN
+# Component Isolation Definition
+metamodelVersion 1.6
+# -------------------------------------------------
+public method redoSColGetBillDetails (
+    INOUT aaId string,
+    INOUT rAaAccountDetails string,
+    INOUT yProcessDate string,
+    INOUT yMoraCtaVen string,
+    INOUT yTmpcreditodiasatraso string,
+    INOUT yTmpcreditocuotasvencidas string,
+    INOUT yTmpcreditocuotaspagadas string,
+    INOUT yTmpcreditomontomoroso string
+)
+{
+    jBC: REDO.S.COL.GET.BILL.DETAILS
+}
+
+
+
+public method redoSColGetPayFreq (
+    INOUT pInAaId string,
+    INOUT pInRStaticMapping string,
+    INOUT pInProcessDate string,
+    INOUT pOutPayFreq string
+)
+{
+    jBC: REDO.S.COL.GET.PAY.FREQ
+}
+
+
+public method redoSColGetPayType (
+    INOUT pInAaId string,
+    INOUT pInRStaticMapping string,
+    INOUT pInProcessDate string,
+    INOUT pOutPayType string
+)
+{
+    jBC: REDO.S.COL.GET.PAY.TYPE
+}
+
+
+public method redoSColGetPeriodBalance (
+    INOUT yAccountId string,
+    INOUT yProcessDate string,
+    INOUT rStaticMapping string,
+    INOUT yAaStatus string,
+    INOUT yAaProperty string,
+    INOUT yOutAaAmount string
+)
+{
+    jBC: REDO.S.COL.GET.PERIOD.BALANCE
+}
