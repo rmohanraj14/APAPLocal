@@ -1,0 +1,650 @@
+* @ValidationCode : MjotOTAxMDA3OTgzOkNwMTI1MjoxNjg1NTMzODgzNzQ3OjkxNjM4Oi0xOi0xOjA6MDpmYWxzZTpOL0E6UjIxX0FNUi4wOi0xOi0x
+* @ValidationInfo : Timestamp         : 31 May 2023 17:21:23
+* @ValidationInfo : Encoding          : Cp1252
+* @ValidationInfo : User Name         : 91638
+* @ValidationInfo : Nb tests success  : N/A
+* @ValidationInfo : Nb tests failure  : N/A
+* @ValidationInfo : Rating            : N/A
+* @ValidationInfo : Coverage          : N/A
+* @ValidationInfo : Strict flag       : N/A
+* @ValidationInfo : Bypass GateKeeper : false
+* @ValidationInfo : Compiler Version  : R21_AMR.0
+* @ValidationInfo : Copyright Temenos Headquarters SA 1993-2021. All rights reserved.
+$PACKAGE APAP.AA
+SUBROUTINE REDO.V.VAL.INS.COMP
+*------------------------------------------------------------------------------------------------------------------
+* Developer    : NAVEENKUMAR.N
+* Date         : 26.05.2010
+* Description  : REDO.V.VAL.INS.COMP
+*------------------------------------------------------------------------------------------------------------------
+* Input/Output:
+* -------------
+* In  : --N/A--
+* Out : --N/A--
+*------------------------------------------------------------------------------------------------------------------
+* Dependencies:
+* -------------
+* Calls     : --N/A--
+* Called By : --N/A--
+*------------------------------------------------------------------------------------------------------------------
+* Revision History:
+* -----------------
+* Version        Date            Name              Description
+* -------        ----            ----              ------------
+*   1.0        26.05.2010      NAVEENKUMAR.N       Initial Creation
+*   2.0        04.09.2010      Ramkumar G      Added some more validation as a port of B2-CR (ODR-2010-09-0011)
+* 29/03/2023         Conversion Tool      AUTO R22 CODE CONVERSION        FM TO @FM ,VM TO @VM, SM TO @SM, Y.FHA.COUNT = Y.FHA.COUNT + 1 TO  Y.FHA.COUNT += 1,   Y.CNT = Y.CNT + 1 TO  Y.CNT += 1
+* 29/03/2023         SURESH      MANUAL R22 CODE CONVERSION               Package Name added APAP.AA, CALL method format changed
+*------------------------------------------------------------------------------------------------------------------
+*
+    $INSERT I_COMMON
+    $INSERT I_EQUATE
+    $INSERT I_F.AA.CHARGE
+    $INSERT I_F.AA.CUSTOMER
+    $INSERT I_F.AA.TERM.AMOUNT
+    $INSERT I_F.AA.LIMIT
+    $INSERT I_F.AA.PAYMENT.SCHEDULE
+    $INSERT I_F.COLLATERAL
+    $INSERT I_F.AA.ARRANGEMENT.ACTIVITY
+    $INSERT I_F.AA.ARRANGEMENT
+    $INSERT I_F.OVERRIDE
+    $INSERT I_AA.LOCAL.COMMON
+    $INSERT I_F.REDO.H.POLICY.NUMBER
+    $INSERT I_F.REDO.APAP.H.COMP.NAME
+    $INSERT I_REDO.T.AUTH.POST.COMMON
+    $INSERT I_F.REDO.T.AUTH.ARRANGEMENT
+
+    IF V$FUNCTION NE 'A' THEN
+        GOSUB INIT
+        GOSUB PROCESS
+        GOSUB GOEND
+    END
+    ELSE
+        GOSUB UPDATE.RTN
+    END
+RETURN
+
+*****
+INIT:
+*****
+    POL.NUMBER = ''
+    SEN.POL.NUMBER = ''
+    INS.POL.TYPE = ''
+    CLASS.POLICY = ''
+    Y.CASE.NO = ''
+    MGMT.TYPE = ''
+    MON.POL.AMT = ''
+    MON.POL.AMT.DAT = ''
+    EXTRA.AMT = ''
+    MON.TOT.PRE.AMT = ''
+    TOT.PREMIUM.AMT = ''
+    EXTRA.AMT = ''
+    MON.TOT.PRE.AMT = ''
+    TOT.PREMIUM.AMT = ''
+
+    FN.COLLATERAL = "F.COLLATERAL"
+    F.COLLATERAL = ""
+    R.COLLATERAL = ""
+    E.COLLATERAL = ""
+    CALL OPF(FN.COLLATERAL,F.COLLATERAL)
+
+    FN.AA.ACTIVITY = "F.AA.ACTIVITY"
+    F.AA.ACTIVITY = ""
+    R.AA.ACTIVITY = ""
+    E.AA.ACTIVITY = ""
+    CALL OPF(FN.AA.ACTIVITY,F.AA.ACTIVITY)
+
+    FN.AA.ARRANGEMENT = "F.AA.ARRANGEMENT"
+    F.AA.ARRANGEMENT = ""
+    R.AA.ARRANGEMENT = ""
+    E.AA.ARRANGEMENT = ""
+    CALL OPF(FN.AA.ARRANGEMENT,F.AA.ARRANGMENT)
+
+    FN.REDO.H.POLICY.NUMBER = 'F.REDO.H.POLICY.NUMBER'
+    F.REDO.H.POLICY.NUMBER  = ''
+    R.REDO.H.POLICY.NUMBER = ''
+    Y.REDO.POL.NUM.ERR = ''
+    Y.POLICY.NUMBER = ''
+    CALL OPF(FN.REDO.H.POLICY.NUMBER,F.REDO.H.POLICY.NUMBER)
+
+    FN.REDO.APAP.H.COMP.NAME = 'F.REDO.APAP.H.COMP.NAME'
+    F.REDO.APAP.H.COMP.NAME = ''
+    CALL OPF(FN.REDO.APAP.H.COMP.NAME,F.REDO.APAP.H.COMP.NAME)
+
+    FN.REDO.T.AUTH.ARRANGEMENT = "F.REDO.T.AUTH.ARRANGEMENT"
+    F.REDO.T.AUTH.ARRANGEMENT = ""
+    R.REDO.T.AUTH.ARRANGEMENT = ""
+    CALL OPF(FN.REDO.T.AUTH.ARRANGEMENT,F.REDO.T.AUTH.ARRANGEMENT)
+
+    Y.FHA.COUNT = 0
+
+    R.Condition = ""
+    R.Condition.charge = ""
+    R.Condition.customer = ""
+    R.Condition.limit = ""
+    Y.VAR.LOC.SECURED = ""
+RETURN
+
+******
+PROCESS:
+******
+
+    GOSUB MULTI.GET.LOC.REF
+    GOSUB REDO.CRR.GET.CONDITIONS.TERM
+    GOSUB REDO.CRR.GET.CONDITIONS.CHARGE
+    GOSUB REDO.CRR.GET.CONDITIONS.CUSTOMER
+    GOSUB REDO.CRR.GET.CONDITIONS.LIMIT
+    GOSUB REDO.CRR.GET.CONDITIONS.PAYMENT.SCHEDULE
+
+    Y.VAR.LOC.SECURED = R.Condition.limit<AA.LIM.LOCAL.REF><1,L.AA.SECURED.POS>
+
+    Y.POL.EXP.DATE = R.Condition.customer<AA.CUS.LOCAL.REF><1,POL.EXP.DATE.POS>
+    Y.POL.ORG.DATE = R.Condition.customer<AA.CUS.LOCAL.REF><1,POLICY.ORG.DATE.POS>
+    Y.POL.START.DATE=R.Condition.customer<AA.CUS.LOCAL.REF><1,POL.START.DATE.POS>
+
+    VAR.INS.POL.TYPE1 = R.NEW(AA.CHG.LOCAL.REF)<1,INS.POLICY.TYPE.POS>
+    VAR.CLASS.POLICY1 = R.NEW(AA.CHG.LOCAL.REF)<1,CLASS.POLICY.POS>
+
+*--------------------------------------------------------------------
+*  This validation is added as a part of the B2-CR
+*--------------------------------------------------------------------
+*
+    VAR.FHA.CASE.NO1 = R.NEW(AA.CHG.LOCAL.REF)<1,L.FHA.CASE.NO.POS>
+    Y.FHA.DCOUNT = DCOUNT(VAR.FHA.CASE.NO1,@SM) ;*AUTO R22 CODE CONVERSION
+*
+*--------------------------------------------------------------------
+
+
+    Y.SEN.POLICY.NUMBER = R.NEW(AA.CHG.LOCAL.REF)<1,SEN.POL.NUMBER.POS>
+    Y.IND.POLICY.NUMBER = R.NEW(AA.CHG.LOCAL.REF)<1,POLICY.NUMBER.POS>
+
+    MON.POL.AMT1 =R.NEW(AA.CHG.LOCAL.REF)<1,MON.POL.AMT.POS>
+
+    Y.PAY.START.DATE = R.Condition.schedule<AA.PS.START.DATE,1>
+    Y.PAY.END.DATE = R.Condition.schedule<AA.PS.END.DATE,1>
+
+    INS.COMPANY=R.Condition.customer<AA.CUS.LOCAL.REF><1,INS.COMPANY.POS>
+
+    Y.CNT = 1
+    Y.CNT1 = DCOUNT(VAR.INS.POL.TYPE1,@SM) ;*AUTO R22 CODE CONVERSION
+    LOOP
+    WHILE Y.CNT LE Y.CNT1
+        VAR.INS.POL.TYPE = VAR.INS.POL.TYPE1<1,1,Y.CNT>
+        VAR.CLASS.POLICY = VAR.CLASS.POLICY1<1,1,Y.CNT>
+        GOSUB PROCESS1
+        GOSUB PROCESS2
+        GOSUB PROCESS4
+        GOSUB PROCESS5
+        GOSUB PROCESS6
+        GOSUB PROCESS7
+        GOSUB PROCESS8
+        GOSUB PROCESS9
+        Y.CNT += 1 ;*AUTO R22 CODE CONVERSION
+    REPEAT
+
+*-----------------------------------------------------------------------
+*  This validation is added as a part of the B2-CR
+*-----------------------------------------------------------------------
+    IF Y.FHA.COUNT LT Y.FHA.DCOUNT AND Y.FHA.DCOUNT NE 0 THEN
+        AF = AA.CHG.LOCAL.REF
+        AV = L.FHA.CASE.NO.POS
+        AS = 1
+        ETEXT = "EB-FHA.VALUE.NULL"
+        CALL STORE.END.ERROR
+    END
+
+    IF Y.VAR.LOC.SECURED NE 'YES' THEN
+        GOSUB GOEND
+    END
+RETURN
+
+*************
+UPDATE.RTN:
+************
+    GOSUB MULTI.GET.LOC.REF
+    FN.REDO.T.AUTH.ARRANGEMENT = "F.REDO.T.AUTH.ARRANGEMENT"
+    F.REDO.T.AUTH.ARRANGEMENT = ""
+    R.REDO.T.AUTH.ARRANGEMENT = ""
+    CALL OPF(FN.REDO.T.AUTH.ARRANGEMENT,F.REDO.T.AUTH.ARRANGEMENT)
+
+    POL.NUMBER<-1>      = R.NEW(AA.CHG.LOCAL.REF)<1,POLICY.NUMBER.POS>
+    SEN.POL.NUMBER<-1>  = R.NEW(AA.CHG.LOCAL.REF)<1,SEN.POL.NUMBER.POS>
+    INS.POL.TYPE<-1>    = R.NEW(AA.CHG.LOCAL.REF)<1,INS.POLICY.TYPE.POS>
+    CLASS.POLICY<-1>    = R.NEW(AA.CHG.LOCAL.REF)<1,CLASS.POLICY.POS>
+    Y.CASE.NO<-1>       = R.NEW(AA.CHG.LOCAL.REF)<1,L.FHA.CASE.NO.POS>
+    MGMT.TYPE<-1>       = R.NEW(AA.CHG.LOCAL.REF)<1,MANAGEMENT.TYPE.POS>
+    MON.POL.AMT<-1>     = R.NEW(AA.CHG.LOCAL.REF)<1,MON.POL.AMT.POS>
+    MON.POL.AMT.DAT<-1> = R.NEW(AA.CHG.LOCAL.REF)<1,MON.POL.AMT.DAT.POS>
+    EXTRA.AMT<-1>       = R.NEW(AA.CHG.LOCAL.REF)<1,EXTRA.AMT.POS>
+    MON.TOT.PRE.AMT<-1> = R.NEW(AA.CHG.LOCAL.REF)<1,MON.TOT.PRE.AMT.POS>
+    TOT.PREMIUM.AMT<-1> = R.NEW(AA.CHG.LOCAL.REF)<1,TOT.PREMIUM.AMT.POS>
+
+    CHANGE @FM TO @VM IN POL.NUMBER      ;*AUTO R22 CODE CONVERSION
+    CHANGE @FM TO @VM IN SEN.POL.NUMBER
+    CHANGE @FM TO @VM IN INS.POL.TYPE
+    CHANGE @FM TO @VM IN CLASS.POLICY
+    CHANGE @FM TO @VM IN Y.CASE.NO
+    CHANGE @FM TO @VM IN MGMT.TYPE
+    CHANGE @FM TO @VM IN MON.POL.AMT
+    CHANGE @FM TO @VM IN MON.POL.AMT.DAT
+    CHANGE @FM TO @VM IN EXTRA.AMT
+    CHANGE @FM TO @VM IN MON.TOT.PRE.AMT
+    CHANGE @FM TO @VM IN TOT.PREMIUM.AMT
+
+RETURN
+
+*********
+PROCESS1:
+*********
+
+    IF VAR.CLASS.POLICY EQ 'GROUP' THEN
+        CALL F.READ(FN.REDO.H.POLICY.NUMBER,VAR.INS.POL.TYPE,R.REDO.H.POLICY.NUMBER,F.REDO.H.POLICY.NUMBER,Y.REDO.POL.ERR)
+        Y.POLICY.NUMBER = R.REDO.H.POLICY.NUMBER<REDO.ARR.POL.POLICY.NUMBER>
+        R.NEW(AA.CHG.LOCAL.REF)<1,SEN.POL.NUMBER.POS,Y.CNT>=Y.POLICY.NUMBER
+        CHECK.SEN.NUM = R.NEW(AA.CHG.LOCAL.REF)<1,SEN.POL.NUMBER.POS,Y.CNT>
+        Y.POLICY.NUMBER += 1
+        R.NEW(AA.CHG.LOCAL.REF)<1,POLICY.NUMBER.POS,Y.CNT> = Y.POLICY.NUMBER
+        CHECK.POL.NUM2 = R.NEW(AA.CHG.LOCAL.REF)<1,POLICY.NUMBER.POS,Y.CNT>
+        CALL F.WRITE(FN.REDO.H.POLICY.NUMBER,VAR.INS.POL.TYPE1,R.REDO.H.POLICY.NUMBER)
+    END
+
+    IF VAR.INS.POL.TYPE EQ "FHA" AND VAR.CLASS.POLICY NE "FHA" THEN
+        AF = AA.CHG.LOCAL.REF
+        AV = CLASS.POLICY.POS
+        ETEXT = "EB-REDO.CLASS.POLICY"
+        CALL STORE.END.ERROR
+    END
+
+*--------------------------------------------------------------------
+*  This validation is added as a part of the B2-CR
+*--------------------------------------------------------------------
+
+    IF VAR.INS.POL.TYPE EQ "FHA" AND VAR.CLASS.POLICY EQ "FHA" THEN
+        Y.FHA.COUNT += 1 ;*AUTO R22 CODE CONVERSION
+    END
+
+*--------------------------------------------------------------------
+
+    IF VAR.INS.POL.TYPE EQ "VU" AND VAR.CLASS.POLICY NE "GROUP" THEN
+        AF = AA.CHG.LOCAL.REF
+        AV = INS.POLICY.TYPE.POS
+        ETEXT = "EB-REDO.CLASS.POLICY.GROUP"
+        CALL STORE.END.ERROR
+    END
+RETURN
+
+*********
+PROCESS2:
+*********
+
+    VAR.MGMT.TYPE=R.NEW(AA.CHG.LOCAL.REF)<1,MANAGEMENT.TYPE.POS>
+
+    IF VAR.CLASS.POLICY EQ "ED" AND  VAR.MGMT.TYPE NE "Not Included on Fee" THEN
+        AF = AA.CHG.LOCAL.REF
+        AV = MANAGEMENT.TYPE.POS
+        ETEXT = "EB-REDO.NOT.INCLUDED.FEE"
+        CALL STORE.END.ERROR
+    END
+
+    IF VAR.CLASS.POLICY EQ "FHA" AND VAR.MGMT.TYPE NE "Not Included on Fee" THEN
+        AF = AA.CHG.LOCAL.REF
+        AV = MANAGEMENT.TYPE.POS
+        ETEXT = "EB-REDO.NOT.INCLUDED.FEE.FHA"
+        CALL STORE.END.ERROR
+    END
+
+    IF VAR.CLASS.POLICY EQ "GROUP" AND VAR.MGMT.TYPE NE 'Included on Fee' THEN
+        AF = AA.CHG.LOCAL.REF
+        AV = MANAGEMENT.TYPE.POS
+        ETEXT = "EB-REDO.INCLUDED.FEE"
+        CALL STORE.END.ERROR
+    END
+
+    IF VAR.CLASS.POLICY EQ "GROUP" AND  VAR.INS.POL.TYPE EQ 'VU' AND VAR.MGMT.TYPE NE 'Not Included on Fee' THEN
+        AF = AA.CHG.LOCAL.REF
+        AV = MANAGEMENT.TYPE.POS
+        ETEXT = 'EB-REDO.NOT.INCLUDED.FEE.VU'
+        CALL STORE.END.ERROR
+    END
+
+    IF VAR.CLASS.POLICY EQ "GROUP" AND  VAR.INS.POL.TYPE NE 'VU' AND VAR.MGMT.TYPE NE 'Included on Fee' THEN
+        AF = AA.CHG.LOCAL.REF
+        AV = MANAGEMENT.TYPE.POS
+        ETEXT = "EB-REDO.INCLUDED.FEE"
+        CALL STORE.END.ERROR
+    END
+
+    IF VAR.INS.POL.TYPE EQ 'VU' AND VAR.MGMT.TYPE NE "Not Included on Fee" THEN
+        AF = AA.CHG.LOCAL.REF
+        AV = MANAGEMENT.TYPE.POS
+        ETEXT = 'EB-REDO.NOT.INCLUDED.FEE.VU'
+        CALL STORE.END.ERROR
+    END
+RETURN
+
+**********
+*PROCESS3:
+**********
+
+IF VAR.CLASS.POLICY EQ "GROUP" AND VAR.INS.POL.TYPE NE "VU" THEN
+
+    START.DATE=R.Condition.schedule<AA.PS.START.DATE>
+    IF START.DATE EQ "" THEN
+        AF = AA.CUS.LOCAL.REF
+        AV= POL.START.DATE.POS
+        ETEXT = "EB-REDO.CHARGE.START.DATE"
+        CALL STORE.END.ERROR
+    END
+END
+IF VAR.CLASS.POLICY EQ "FHA" THEN
+    END.DATE = R.Condition.schedule<AA.PS.END.DATE>
+    IF NOT(END.DATE) THEN
+        ETEXT = "EB-ISSUE.DATE.MISSING"
+        CALL STORE.END.ERROR
+    END
+END
+RETURN
+
+********
+PROCESS4:
+********
+
+    IF VAR.INS.POL.TYPE EQ "VU" THEN
+        IF VAR.MGMT.TYPE NE "Not Included on Fee" THEN
+            AF = AA.CHG.LOCAL.REF
+            AV = MANAGEMENT.TYPE.POS
+            ETEXT = "EB-REDO.FEE.TYPE.LIFE.POLICIES"
+            CALL STORE.END.ERROR
+        END
+    END
+
+    IF VAR.CLASS.POLICY EQ "FHA" THEN
+        CALL F.READ(FN.REDO.APAP.H.COMP.NAME,INS.COMPANY,R.COMP,F.REDO.APAP.H.COMP.NAME,REDO.COMP.ERR)
+
+        IF  R.COMP THEN
+            INS.COMP.TYPE =  R.COMP<REDO.CMP.INS.COMP.NAME>
+            IF INS.COMP.TYPE NE "BNV" THEN
+                AF = AA.CUS.LOCAL.REF
+                AV = INS.COMPANY.POS
+                ETEXT = "EB-REDO.BNV.INSURANCE.POLICY"
+                CALL STORE.END.ERROR
+            END
+        END
+    END
+RETURN
+
+********
+PROCESS5:
+********
+
+    IF VAR.INS.POL.TYPE EQ "FHA" OR VAR.INS.POL.TYPE EQ "VI" OR VAR.INS.POL.TYPE EQ "VU" THEN
+        AMOUNT = R.Condition<AA.AMT.AMOUNT>
+        R.Condition<AA.AMT.LOCAL.REF,INS.AMOUNT.POS>=AMOUNT
+    END
+
+    IF AMOUNT THEN
+        Y.INS.TERM.AMOUNT = R.Condition<AA.AMT.LOCAL.REF><1,INS.AMOUNT.POS>
+
+        IF VAR.INS.POL.TYPE EQ "VE" THEN
+            L.AA.COL.ID=R.Condition<AA.AMT.LOCAL.REF><1,L.AA.COL.POS>
+            CALL F.READ(FN.COLLATERAL,L.AA.COL.ID,R.COLLATERAL,F.COLLATERAL,E.COLLATERAL)
+            R.Condition<AA.AMT.LOCAL.REF,INS.AMOUNT.POS>=R.COLLATERAL<COLL.NOMINAL.VALUE>
+        END
+
+        IF NOT(Y.INS.TERM.AMOUNT) THEN
+            AF = AA.AMT.LOCAL.REF
+            AV = INS.AMOUNT.POS
+            ETEXT = 'EB-INS.TERM.AMT.MISSING'
+            CALL STORE.END.ERROR
+        END
+    END
+RETURN
+
+********
+PROCESS6:
+********
+
+    INS.AMOUNT.DATE=R.Condition<AA.AMT.LOCAL.REF><1,INS.AMOUNT.DATE.POS>
+
+    IF VAR.INS.POL.TYPE NE "VE" AND INS.AMOUNT.DATE NE "" THEN
+        AF = AA.AMT.LOCAL.REF
+        AV = INS.AMOUNT.DATE.POS
+        ETEXT = "EB-INS.AMOUNT.FOR.VEHICLES"
+        CALL STORE.END.ERROR
+    END
+
+    IF VAR.INS.POL.TYPE EQ "PVC" THEN
+        L.AA.COL.ID=R.Condition<AA.AMT.LOCAL.REF><1,L.AA.COL.POS>
+        CALL F.READ(FN.COLLATERAL,L.AA.COL.ID,R.COLLATERAL,F.COLLATERAL,E.COLLATERAL)
+        R.Condition<AA.AMT.LOCAL.REF,INS.AMOUNT.POS>=R.COLLATERAL<COLL.THIRD.PARTY.VALUE>
+    END
+
+    IF VAR.INS.POL.TYPE EQ "PVP" THEN
+        R.Condition<AA.AMT.LOCAL.REF,INS.AMOUNT.POS>=R.Condition<AA.AMT.AMOUNT>
+    END
+RETURN
+
+********
+PROCESS7:
+********
+    IF VAR.INS.POL.TYPE EQ "FHA" OR VAR.INS.POL.TYPE EQ 'VU' AND VAR.CLASS.POLICY EQ 'ED' THEN
+        MON.POL.AMT = R.NEW(AA.CHG.LOCAL.REF)<1,MON.POL.AMT.POS>
+        IF MON.POL.AMT NE '' THEN
+            AF = AA.CHG.LOCAL.REF
+            AV = MON.POL.AMT.POS
+            ETEXT = "EB-REDO.NO.POLICY.AMT"
+            CALL STORE.END.ERROR
+        END
+
+    END
+
+    MON.POL.AMT.DAT = R.NEW(AA.CHG.LOCAL.REF)<1,MON.POL.AMT.DAT.POS>
+
+    IF MON.POL.AMT.DAT NE "" AND VAR.INS.POL.TYPE NE "VE" THEN
+        AF = AA.CHG.LOCAL.REF
+        AV = MON.POL.AMT.DAT.POS
+        ETEXT = "EB-REDO.MONTHLY.POLICY.AMT"
+        CALL STORE.END.ERROR
+    END
+
+    IF VAR.INS.POL.TYPE EQ "FHA" AND VAR.CLASS.POLICY EQ "ED" THEN
+        IF R.NEW(AA.CHG.LOCAL.REF)<1,EXTRA.AMT.POS> NE "" THEN
+            AF = AA.CHG.LOCAL.REF
+            AV = EXTRA.AMT.POS
+            ETEXT = "EB-REDO.NO.POLICY.AMT"
+            CALL STORE.END.ERROR
+        END
+    END
+RETURN
+
+********
+PROCESS8:
+********
+
+    MON.POL.AMT1=R.NEW(AA.CHG.LOCAL.REF)<1,MON.POL.AMT.POS>
+    EXTRA.AMT1=R.NEW(AA.CHG.LOCAL.REF)<1,EXTRA.AMT.POS>
+
+    IF VAR.INS.POL.TYPE EQ 'FHA' OR VAR.INS.POL.TYPE EQ 'VU' AND EXTRA.AMT1 NE '' THEN
+        AF = AA.CHG.LOCAL.REF
+        AV = EXTRA.AMT.POS
+        ETEXT ="EB-REDO.NO.EXTRA.AMT"
+
+        CALL STORE.END.ERROR
+    END
+    IF VAR.CLASS.POLICY EQ 'ED' AND EXTRA.AMT1 NE '' THEN
+        AF = AA.CHG.LOCAL.REF
+        AV = EXTRA.AMT.POS
+        ETEXT = "EB-REDO.NO.EXTRA.AMT"
+        CALL STORE.END.ERROR
+    END
+
+    MON.TOT.PRE.AMT = MON.POL.AMT1 + EXTRA.AMT1
+
+    R.NEW(AA.CHG.LOCAL.REF)<1,MON.TOT.PRE.AMT.POS> = MON.TOT.PRE.AMT
+
+    TOT.PREMIUM.AMT = R.NEW(AA.CHG.LOCAL.REF)<1,TOT.PREMIUM.AMT.POS>
+
+
+    IF VAR.INS.POL.TYPE EQ 'VU' AND VAR.CLASS.POLICY EQ 'ED' AND MON.TOT.PRE.AMT EQ '' THEN
+        AF = AA.CHG.LOCAL.REF
+        AV = TOT.PREMIUM.AMT.POS
+        ETEXT = "EB-PREMIUM.AMOUNT.MANDATORY"
+        CALL STORE.END.ERROR
+
+    END
+
+
+    IF VAR.INS.POL.TYPE NE 'VU' AND  TOT.PREMIUM.AMT NE '' THEN
+        AF = AA.CHG.LOCAL.REF
+        AV = TOT.PREMIUM.AMT.POS
+        ETEXT = "EB-REDO.PREMIUM.AMOUNT"
+        CALL STORE.END.ERROR
+    END
+
+
+RETURN
+
+*********
+PROCESS9:
+*********
+    ARR.ID=c_aalocArrId
+
+    CALL F.READ(FN.AA.ARRANGMENT,ARR.ID,R.AA.ARRANGMENT,F.AA.ARRANGMENT,E.AA.ARRANGMENT)
+
+    R.Condition.customer<AA.CUS.LOCAL.REF,POLICY.ORG.DATE.POS>=R.Condition<AA.ARR.PROD.EFF.DATE>
+
+    CUS.POL.ORG.DATE =  R.Condition.customer<AA.CUS.LOCAL.REF><1,POLICY.ORG.DATE.POS>
+    CUS.POL.STRT.DATE =  R.Condition.customer<AA.CUS.LOCAL.REF><1,POL.START.DATE.POS>
+
+    IF VAR.CLASS.POLICY EQ 'GROUP' AND V$FUNCTION EQ 'I' THEN
+        IF Y.POL.ORG.DATE  NE Y.POL.START.DATE THEN
+            TEXT="REDO-POLICY.START.DATE"
+            Y.CUR.CNT = DCOUNT(R.NEW(AA.CHG.OVERRIDE),@VM) ;*AUTO R22 CODE CONVERSION
+            CALL STORE.OVERRIDE(Y.CUR.CNT+1)
+        END
+    END
+
+    IF VAR.CLASS.POLICY EQ "FHA" THEN
+        R.Condition.customer<AA.CUS.LOCAL.REF,POL.EXP.DATE.POS>=R.Condition<AA.AMT.MATURITY.DATE>
+    END
+
+    Y.POL.EXP.DATE = R.Condition.customer<AA.CUS.LOCAL.REF,POL.EXP.DATE.POS>
+    Y.MATURITY.DATE = R.Condition<AA.AMT.MATURITY.DATE>
+    IF Y.POL.EXP.DATE GT Y.MATURITY.DATE THEN
+        AF = AA.CHG.LOCAL.REF
+        AV = TOT.PREMIUM.AMT.POS
+        ETEXT = 'EB-POL.EXP.DATE.BEYOND.MAT.DATE'
+        CALL STORE.END.ERROR
+    END
+
+RETURN
+
+***************
+MULTI.GET.LOC.REF:
+***************
+    Y.APPLICATION = "AA.PRD.DES.CHARGE":@FM:"AA.PRD.DES.CUSTOMER":@FM:"AA.PRD.DES.TERM.AMOUNT":@FM:"AA.PRD.DES.LIMIT" ;*AUTO R22 CODE CONVERSION
+    Y.FIELD.NAME = "CLASS.POLICY":@VM:"INS.POLICY.TYPE":@VM:"POLICY.NUMBER":@VM:"SEN.POL.NUMBER":@VM:"MANAGEMENT.TYPE":@VM:"MON.POL.AMT":@VM:"MON.POL.AMT.DAT":@VM:"EXTRA.AMT":@VM:"MON.TOT.PRE.AMT":@VM:"TOT.PREMIUM.AMT":@VM:"L.FHA.CASE.NO":@FM:"INS.COMPANY":@VM:"POLICY.ORG.DATE":@VM:"POL.START.DATE":@VM:"POL.EXP.DATE":@VM:"POL.ISSUE.DATE":@VM:"REMARKS":@FM:"INS.AMOUNT":@VM:"INS.AMOUNT.DATE":@VM:"L.AA.COL":@FM:"L.AA.SECURED" ;*AUTO R22 CODE CONVERSION
+    Y.FIELD.POS = ""
+    CALL MULTI.GET.LOC.REF(Y.APPLICATION,Y.FIELD.NAME,Y.FIELD.POS)
+
+    CLASS.POLICY.POS = Y.FIELD.POS<1,1>
+    INS.POLICY.TYPE.POS = Y.FIELD.POS<1,2>
+    POLICY.NUMBER.POS = Y.FIELD.POS<1,3>
+    SEN.POL.NUMBER.POS = Y.FIELD.POS<1,4>
+    MANAGEMENT.TYPE.POS = Y.FIELD.POS<1,5>
+    MON.POL.AMT.POS = Y.FIELD.POS<1,6>
+    MON.POL.AMT.DAT.POS = Y.FIELD.POS<1,7>
+    EXTRA.AMT.POS = Y.FIELD.POS<1,8>
+    MON.TOT.PRE.AMT.POS = Y.FIELD.POS<1,9>
+    TOT.PREMIUM.AMT.POS = Y.FIELD.POS<1,10>
+    L.FHA.CASE.NO.POS = Y.FIELD.POS<1,11>
+
+    INS.COMPANY.POS = Y.FIELD.POS<2,1>
+    POLICY.ORG.DATE.POS = Y.FIELD.POS<2,2>
+    POL.START.DATE.POS = Y.FIELD.POS<2,3>
+    POL.EXP.DATE.POS = Y.FIELD.POS<2,4>
+    POL.ISSUE.DATE.POS = Y.FIELD.POS<2,5>
+    REMARKS.POS = Y.FIELD.POS<2,6>
+
+    INS.AMOUNT.POS = Y.FIELD.POS<3,1>
+    INS.AMOUNT.DATE.POS = Y.FIELD.POS<3,2>
+    L.AA.COL.POS = Y.FIELD.POS<3,3>
+    L.AA.SECURED.POS = Y.FIELD.POS<4,1>
+
+RETURN
+
+*****************
+REDO.CRR.GET.CONDITIONS.TERM:
+*****************
+
+
+    ARR.ID=c_aalocArrId
+    EFF.DATE=TODAY
+    PROP.CLASS='TERM.AMOUNT'
+
+    PROPERTY=''
+    PROPERTY = ''
+    R.Condition=''
+    ERR.MSG=''
+    APAP.AA.redoCrrGetConditions(ARR.ID,EFF.DATE,PROP.CLASS,PROPERTY,R.Condition,ERR.MSG);* R22 Manual conversion
+RETURN
+*****************
+REDO.CRR.GET.CONDITIONS.CHARGE:
+*****************
+
+    ARR.ID=c_aalocArrId
+    EFF.DATE=TODAY
+    PROP.CLASS='CHARGE'
+
+    PROPERTY = ''
+    R.Condition.charge=''
+    ERR.MSG=''
+    APAP.AA.redoCrrGetConditions(ARR.ID,EFF.DATE,PROP.CLASS,PROPERTY,R.Condition.charge,ERR.MSG) ;* R22 Manual conversion
+RETURN
+*****************
+REDO.CRR.GET.CONDITIONS.CUSTOMER:
+*****************
+
+    ARR.ID=c_aalocArrId
+    EFF.DATE=TODAY
+    PROP.CLASS='CUSTOMER'
+
+    PROPERTY = ''
+    R.Condition.customer=''
+    ERR.MSG=''
+    APAP.AA.redoCrrGetConditions(ARR.ID,EFF.DATE,PROP.CLASS,PROPERTY,R.Condition.customer,ERR.MSG);* R22 Manual conversion
+RETURN
+
+******************
+REDO.CRR.GET.CONDITIONS.LIMIT:
+******************
+
+    ARR.ID=c_aalocArrId
+    EFF.DATE=TODAY
+    PROP.CLASS='LIMIT'
+
+    PROPERTY = ''
+    R.Condition.limit=''
+    ERR.MSG=''
+    APAP.AA.redoCrrGetConditions(ARR.ID,EFF.DATE,PROP.CLASS,PROPERTY,R.Condition.limit,ERR.MSG);* R22 Manual conversion
+
+RETURN
+******************
+REDO.CRR.GET.CONDITIONS.PAYMENT.SCHEDULE:
+******************
+
+    ARR.ID=c_aalocArrId
+    EFF.DATE=TODAY
+    PROP.CLASS='PAYMENT.SCHEDULE'
+
+    PROPERTY = ''
+    R.Condition.schedule = ''
+    ERR.MSG= ''
+    APAP.AA.redoCrrGetConditions(ARR.ID,EFF.DATE,PROP.CLASS,PROPERTY,R.Condition.schedule,ERR.MSG);* R22 Manual conversion
+
+RETURN
+
+***************
+GOEND:
+***************
+END

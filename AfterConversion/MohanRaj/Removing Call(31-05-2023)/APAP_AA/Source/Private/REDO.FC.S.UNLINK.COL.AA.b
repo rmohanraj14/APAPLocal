@@ -1,0 +1,503 @@
+* @ValidationCode : MjotNzEwMzY2MDY3OkNwMTI1MjoxNjg1NTMwOTIzNzQwOjkxNjM4Oi0xOi0xOjA6MDpmYWxzZTpOL0E6UjIxX0FNUi4wOi0xOi0x
+* @ValidationInfo : Timestamp         : 31 May 2023 16:32:03
+* @ValidationInfo : Encoding          : Cp1252
+* @ValidationInfo : User Name         : 91638
+* @ValidationInfo : Nb tests success  : N/A
+* @ValidationInfo : Nb tests failure  : N/A
+* @ValidationInfo : Rating            : N/A
+* @ValidationInfo : Coverage          : N/A
+* @ValidationInfo : Strict flag       : N/A
+* @ValidationInfo : Bypass GateKeeper : false
+* @ValidationInfo : Compiler Version  : R21_AMR.0
+* @ValidationInfo : Copyright Temenos Headquarters SA 1993-2021. All rights reserved.
+$PACKAGE APAP.AA;*MANUAL R22 CODE CONVERSION
+SUBROUTINE REDO.FC.S.UNLINK.COL.AA
+*
+* Subroutine Type : ROUTINE
+* Attached to     :  COLLATERAL.RIGHT,REDO.MANTENIMIENTO
+* Attached as     : Auth Routine
+* Primary Purpose : If a limit references has been removed then this COLLATERAL.ID
+* must be removed also of AA.TERM.AMOUNT details.
+*
+* Incoming:
+* ---------
+*
+* Outgoing:
+* ---------
+*
+* Error Variables:
+*
+*-----------------------------------------------------------------------------
+* Modification History:
+*
+* Development for : Asociacion Popular de Ahorros y Prestamos
+* Development by  : Jorge Valarezo RTAM
+* Date            : 22 Mar 20113
+* ammended by     : MG RTAM
+
+* Modification History:
+*DATE              WHO                REFERENCE                        DESCRIPTION
+*29-03-2023      Conversion Tool      AUTO R22 CODE CONVERSION        VM TO @VM,SM TO @SM,FM TO @FM,++ TO +=1,CHAR TO CHARX,
+*29-03-2023      MOHANRAJ R           MANUAL R22 CODE CONVERSION         Package name added APAP.AA, CALL method format changed
+*-----------------------------------------------------------------------------
+*
+    $INSERT I_COMMON
+    $INSERT I_EQUATE
+    $INSERT I_AA.LOCAL.COMMON
+    $INSERT I_F.COLLATERAL
+    $INSERT I_F.AA.ARRANGEMENT.ACTIVITY
+    $INSERT I_F.COLLATERAL.RIGHT
+    $INSERT I_F.AA.CUSTOMER
+
+    $INSERT I_F.AA.TERM.AMOUNT
+    $INSERT I_F.ACCOUNT
+    $INSERT I_F.AA.LIMIT
+    $INSERT I_F.CUSTOMER.ACCOUNT
+    $INSERT I_F.AA.ACCOUNT.DETAILS
+    $USING APAP.REDOSRTN
+    $USING APAP.REDOFCFI
+    $USING APAP.TAM
+    
+    GOSUB INITIALISE
+    GOSUB OPEN.FILES
+    GOSUB PROCESS.MAIN
+
+RETURN          ;* Program RETURN
+
+*------------------------
+INITIALISE:
+*=========
+
+
+*Id Collateral.Rihgt
+    Y.ID.COLLATERAL = ID.NEW : ".1"
+    Y.ID.COLL.RIGHT = ID.NEW
+
+    FN.CUSTOMER.ACCOUNT = 'F.CUSTOMER.ACCOUNT'
+    F.CUSTOMER.ACCOUNT = ''
+    R.CUSTOMER.ACCOUNT = ''
+
+    FN.ACCOUNT = 'F.ACCOUNT'
+    F.ACCOUNT = ''
+    R.ACCOUNT = ''
+
+    FN.AA.ACCOUNT.DETAILS = 'F.AA.ACCOUNT.DETAILS'
+    F.AA.ACCOUNT.DETAILS = ''
+    R.AA.ACCOUNT.DETAILS = ''
+
+    FN.COLLATERAL = 'F.COLLATERAL'
+    F.COLLATERAL  = ''
+    R.COLLATERAL   = ''
+
+    FN.AA.ARR.LIMIT = 'F.AA.ARR.LIMIT'
+    F.AA.ARR.LIMIT  = ''
+
+    FN.AA.ARR.TERM.AMOUNT = 'F.AA.ARR.TERM.AMOUNT'
+    F.AA.ARR.TERM.AMOUNT  = ''
+    R.AA.ARR.TERM.AMOUNT = ''
+
+
+    Y.LIM.REF.COUNT = ''
+    Y.LIM.REF = ''
+    Y.ID.CUSTOMER = ''
+    Y.ID.LIMIT = ''
+    Y.COLLATERAL.COUNT = ''
+
+    Y.AA.REQUEST = ''
+
+    Y.ARR.ID = ''
+
+    REDO.COLL.LIST = ''
+    Y.LIST.ID = ''
+
+*LIMITS IDS MODIFIED
+    NEW.LIMIT.REF = R.NEW(COLL.RIGHT.LIMIT.REFERENCE)
+*LIMITS IDS PREVIOUS
+    OLD.LIMIT.REF = R.OLD(COLL.RIGHT.LIMIT.REFERENCE)
+    GOSUB GET.LOCAL.FLDS.POS
+
+    NUM.AA.ID = 0
+RETURN
+*=========================
+GET.LOCAL.FLDS.POS:
+*=========================
+* get local fields position from TERM.AMOUNT
+    Y.FIELD = "L.AA.COL"
+    Y.FIELD.COL.AMOUNT = "L.AA.COL.VAL"
+    Y.FIELD.COL.DESC   = "L.AA.COL.DESC"
+* PACS00308600 - S
+    Y.FIELD.COL.VALAMT = "L.AA.AV.COL.BAL"
+* PACS00260025
+    Y.FILED.AV.AMT = "L.COL.VAL.AVA"
+    Y.FILED.MX.AMT = "L.COL.LN.MX.VAL"
+
+    Y.FIELD.NAME = Y.FIELD:@VM:Y.FIELD.COL.AMOUNT:@VM:Y.FIELD.COL.DESC:@VM:Y.FIELD.COL.VALAMT:@FM:Y.FILED.AV.AMT:@VM:Y.FILED.MX.AMT ;*AUTO R22 CODE CONVERSION
+* PACS00308600 - E
+    Y.APPLICATION = "AA.PRD.DES.TERM.AMOUNT":@FM:'COLLATERAL' ;*AUTO R22 CODE CONVERSION
+    Y.POS = ''
+    CALL MULTI.GET.LOC.REF(Y.APPLICATION,Y.FIELD.NAME,Y.POS)
+    Y.COLL.FIELD.POS = Y.POS<1,1>
+    Y.COL.AMT.POS = Y.POS<1,2>
+    Y.COL.DES.POS = Y.POS<1,3>
+    Y.COL.AVL.POS = Y.POS<1,4>          ;* PACS00308600 - S/E
+    Y.COL.R.AVL.POS = Y.POS<2,1>
+    Y.COL.R.MX.POS = Y.POS<2,2>
+
+RETURN
+*=============
+OPEN.FILES:
+*=============
+    CALL OPF(FN.COLLATERAL, F.COLLATERAL)
+    CALL OPF(FN.AA.ARR.LIMIT, F.AA.ARR.LIMIT)
+    CALL OPF(FN.AA.ARR.TERM.AMOUNT, F.AA.ARR.TERM.AMOUNT)
+    CALL OPF (FN.AA.ACCOUNT.DETAILS, F.AA.ACCOUNT.DETAILS)
+    CALL OPF (FN.CUSTOMER.ACCOUNT, F.CUSTOMER.ACCOUNT)
+    CALL OPF (FN.ACCOUNT,F.ACCOUNT)
+
+RETURN
+
+*==============
+PROCESS.MAIN:
+*==============
+
+    GOSUB CHECK.LIMIT.REMOVED
+    Y.LIM.REF.COUNT = DCOUNT(LIMIT.TO.REMOVED,@FM) ;*AUTO R22 CODE CONVERSION
+    IF Y.LIM.REF.COUNT LE 0 THEN
+        RETURN
+    END
+    ITR = 1
+
+    LOOP
+    WHILE ITR LE Y.LIM.REF.COUNT
+        Y.LIM.REF = LIMIT.TO.REMOVED<ITR>
+        Y.ID.CUSTOMER = FIELD(Y.LIM.REF,'.',1)
+        Y.ID.LIMIT.AUX = FIELD(Y.LIM.REF,'.',2)
+*Y.ID.LIMIT.AUX = Y.ID.LIMIT.AUX + 0
+        Y.ID.LIMIT.AUX += 0 ;*AUTO R22 CODE CONVERSION
+        Y.ID.LIMIT = Y.ID.LIMIT.AUX : "." : FIELD(Y.LIM.REF,'.',3)
+        GOSUB GET.CUSTOMER.ACCOUNTS
+
+        ITR += 1 ;*AUTO R22 CODE CONVERSION
+    REPEAT
+    ITR = 1
+
+    LOOP
+    WHILE ITR LE NUM.AA.ID
+        GOSUB GET.TERM.AMOUNT
+        GOSUB DELETE.COLL.ID
+        GOSUB BUILD.OFS.MESSAGE
+        ITR += 1 ;*AUTO R22 CODE CONVERSION
+    REPEAT
+
+RETURN
+*======================
+CHECK.LIMIT.REMOVED:
+*======================
+
+    LIMIT.TO.REMOVED = ''
+    ITR = 1
+    LIMIT.REF.POS = ''
+    OLD.LIMIT.NUM = DCOUNT(OLD.LIMIT.REF,@VM)
+    LOOP
+    WHILE ITR LE OLD.LIMIT.NUM
+* PACS00308600 - S
+*        LOCATE OLD.LIMIT.REF<ITR> IN NEW.LIMIT.REF SETTING LIMIT.REF.POS ELSE
+*            LIMIT.TO.REMOVED<-1> = OLD.LIMIT.REF<ITR>
+        LOCATE OLD.LIMIT.REF<1,ITR> IN NEW.LIMIT.REF SETTING LIMIT.REF.POS ELSE
+            LIMIT.TO.REMOVED<-1> = OLD.LIMIT.REF<1,ITR>
+* PACS00308600 - E
+        END
+        ITR += 1 ;*AUTO R22 CODE CONVERSION
+    REPEAT
+RETURN
+
+*======================
+GET.CUSTOMER.ACCOUNTS:
+*=====================
+
+    CALL F.READ(FN.CUSTOMER.ACCOUNT,Y.ID.CUSTOMER,R.CUSTOMER.ACCOUNT,F.CUSTOMER.ACCOUNT,Y.ERR)
+    ITR.ACC = 1
+*  Y.NUM.ACC = DCOUNT(R.CUSTOMER.ACCOUNT<EB.CAC.ACCOUNT.NUMBER>,FM)
+    LOOP
+    WHILE R.CUSTOMER.ACCOUNT<ITR.ACC>
+        Y.ACC.ID = R.CUSTOMER.ACCOUNT<ITR.ACC>
+        CALL F.READ(FN.ACCOUNT,Y.ACC.ID,R.ACCOUNT,F.ACCOUNT,YERR)
+        IF R.ACCOUNT<AC.ARRANGEMENT.ID> THEN
+            Y.AA.ID = R.ACCOUNT<AC.ARRANGEMENT.ID>
+            GOSUB GET.AA.DETAILS
+            GOSUB GET.AA.LIMIT.DETAIL
+*AA Changes 20161013
+*      IF R.AA.ARR.LIMIT<AA.LIM.LIMIT.REFERENCE> EQ Y.ID.LIMIT THEN
+            Y.LIMIT.REFER = R.AA.ARR.LIMIT<AA.LIM.LIMIT.REFERENCE>
+            Y.LIMIT.SERIAL = R.AA.ARR.LIMIT<AA.LIM.LIMIT.SERIAL>
+            Y.LIMIT.CONCAT = Y.LIMIT.REFER:".":Y.LIMIT.SERIAL
+            IF Y.LIMIT.CONCAT EQ Y.ID.LIMIT THEN
+*AA Changes 20161013
+                AA.LINK.LIMIT<1,NUM.AA.ID>= Y.AA.ID         ;*Store all AA.ID from where will be removed all Collateral Ids
+                AA.LINK.LIMIT<2,NUM.AA.ID>= Y.ARR.DATE      ;*Store all AA base date
+                NUM.AA.ID += 1 ;*AUTO R22 CODE CONVERSION
+            END
+        END
+        ITR.ACC += 1 ;*AUTO R22 CODE CONVERSION
+    REPEAT
+RETURN
+*======================
+GET.AA.DETAILS:
+*======================
+    CALL F.READ(FN.AA.ACCOUNT.DETAILS,Y.AA.ID,R.AA.ACCOUNT.DETAILS,F.AA.ACCOUNT.DETAILS,Y.ERR)
+    Y.ARR.DATE = R.AA.ACCOUNT.DETAILS<AA.AD.BASE.DATE>
+RETURN
+
+*======================
+GET.AA.LIMIT.DETAIL:
+*======================
+    PROPERTY.CLASS = 'LIMIT'
+    R.AA.ARR.LIMIT = ''
+    GOSUB GET.PROPERTY
+    GOSUB GET.AA.CONDITIONS
+    IF returnConditions THEN
+        R.AA.ARR.LIMIT = returnConditions
+    END
+
+RETURN
+
+*==============
+GET.PROPERTY:
+*==============
+* Get the property Name for the property class
+
+    ARR.INFO = Y.AA.ID
+    R.ARRANGEMENT = ''
+    AA.PROPERTY = ''
+    CLASS.LIST = ''
+    CLASS.CTR = ''
+    PROP.LIST = ''
+    CALL AA.GET.ARRANGEMENT.PROPERTIES(ARR.INFO, Y.ARR.DATE, R.ARRANGEMENT, PROP.LIST)
+    CALL AA.GET.PROPERTY.CLASS (PROP.LIST, CLASS.LIST)
+    CLASS.LIST = RAISE(CLASS.LIST)
+    PROP.LIST = RAISE(PROP.LIST)
+    LOOP
+        REMOVE Y.CLASS FROM CLASS.LIST SETTING CLASS.POS
+        CLASS.CTR +=1
+    WHILE Y.CLASS:CLASS.POS
+        IF Y.CLASS EQ PROPERTY.CLASS THEN
+            AA.PROPERTY = PROP.LIST<CLASS.CTR>
+            RETURN
+        END
+    REPEAT
+
+
+RETURN
+*====================
+GET.AA.CONDITIONS:
+*====================
+    Y.EFFEC.DATE = TODAY
+    CALL AA.GET.ARRANGEMENT.CONDITIONS(ARR.INFO,PROPERTY.CLASS,AA.PROPERTY,Y.EFFEC.DATE,returnIds,returnConditions,returnError)
+    CHANGE @VM TO @FM IN returnConditions ;*AUTO R22 CODE CONVERSION
+    CHANGE @SM TO @VM IN returnConditions ;*AUTO R22 CODE CONVERSION
+RETURN
+*=================
+GET.TERM.AMOUNT:
+*=================
+
+    PROPERTY.CLASS = 'TERM.AMOUNT'
+    R.AA.ARR.TERM.AMOUNT = ''
+    Y.AA.ID = AA.LINK.LIMIT<1,ITR>
+    Y.ARR.DATE =AA.LINK.LIMIT<2,ITR>
+    GOSUB GET.PROPERTY
+    GOSUB GET.AA.CONDITIONS
+    IF returnConditions THEN
+        R.AA.ARR.TERM.AMOUNT = returnConditions
+    END
+RETURN
+*
+*==============
+EVAL.CHAR.UNKW:
+*==============
+*
+    Y.AA.COL.IDS = '' ; COL.ID.LINKED = ''
+    APAP.AA.redoColAaGetLinksCol(Y.AA.ID,COL.ID.LINKED);* R22 Manual conversion
+    W.VALCHR = CHARX(251) ;*AUTO R22 CODE CONVERSION
+    Y.AA.COL.IDS = CHANGE(COL.ID.LINKED, W.VALCHR , @VM ) ;*AUTO R22 CODE CONVERSION
+    IF COL.ID.LINKED EQ "ERROR" THEN
+        Y.AA.COL.IDS = ''
+    END
+*
+RETURN
+*
+*=================
+DELETE.COLL.ID:
+*=================
+    IF NOT(R.AA.ARR.TERM.AMOUNT) THEN
+        RETURN
+    END
+* A partir de aqui cambiar a leer las COs ligadas al prestamo vs. el Id del CRight actual.
+* PACS00308600 - S
+*    CALL REDO.DEL.CL.BALANCE(Y.AA.ID, Y.ID.COLLATERAL)
+*    Y.AA.COL.IDS = R.AA.ARR.TERM.AMOUNT<AA.AMT.LOCAL.REF,Y.COLL.FIELD.POS>
+
+    GOSUB EVAL.CHAR.UNKW      ;* PACS00290578 - S/E
+
+*    CHANGE W.VALCHR TO VM IN Y.AA.COL.IDS         ;* PACS00290578 - S/E
+* PACS00308600 - E
+    Y.AA.COL.AMT   = R.AA.ARR.TERM.AMOUNT<AA.AMT.LOCAL.REF,Y.COL.AMT.POS>
+    CHANGE W.VALCHR TO @VM IN Y.AA.COL.AMT         ;* PACS00290578 - S/E ;*AUTO R22 CODE CONVERSION
+    Y.AA.COL.DESC  = R.AA.ARR.TERM.AMOUNT<AA.AMT.LOCAL.REF,Y.COL.DES.POS>
+    CHANGE W.VALCHR TO @VM IN Y.AA.COL.DESC        ;* PACS00290578 - S/E ;*AUTO R22 CODE CONVERSION
+* PACS00307565 - S
+    Y.AA.COL.AVAMT = ''
+    Y.AA.COL.AVAMT = R.AA.ARR.TERM.AMOUNT<AA.AMT.LOCAL.REF,Y.COL.AVL.POS>
+    CHANGE W.VALCHR TO @VM IN Y.AA.COL.AVAMT ;*AUTO R22 CODE CONVERSION
+* PACS00307565 - E
+*      LOCATE Y.ID.COLLATERAL IN Y.AA.COL.IDS<1,1> SETTING Y.COL.POS THEN ;* PACS00290578 - S
+*         DEL Y.AA.COL.IDS<1,Y.COL.POS>
+*         DEL Y.AA.COL.AMT<1,Y.COL.POS>
+*         DEL Y.AA.COL.DESC<1,Y.COL.POS>
+*      END  ;* PACS00290578 - E
+RETURN
+*=================
+BUILD.OFS.MESSAGE:
+*=================
+    Y.AA.REQUEST = ''
+    Y.AA.REQUEST<AA.ARR.ACT.ARRANGEMENT> = Y.AA.ID
+    Y.AA.REQUEST<AA.ARR.ACT.EFFECTIVE.DATE> = TODAY
+    Y.AA.REQUEST<AA.ARR.ACT.ACTIVITY> = 'LENDING-UPDATE-COMMITMENT'   ;* 'LENDING-CHANGE.TERM-COMMITMENT'
+    Y.AA.REQUEST<AA.ARR.ACT.PROPERTY,-1> = AA.PROPERTY
+    Y.COL.LOAN.AMT = 0
+    GOSUB REBUILD.COL.IDS
+    APP.NAME = 'AA.ARRANGEMENT.ACTIVITY'
+    IN.FUNCTION = 'I'
+    VERSION.NAME = 'AA.ARRANGEMENT.ACTIVITY,ZERO.AUTH'
+    AAA.ID = ''
+    CALL OFS.BUILD.RECORD(APP.NAME, IN.FUNCTION, "PROCESS", VERSION.NAME, "", "0", AAA.ID, Y.AA.REQUEST, PROCESS.MSG)    ;
+    GOSUB TRIGGER.OFS         ;* Post the OFS in the queue
+
+* PACS00260025 - restore available amount to collateral
+    GOSUB RESTORE.COL.AMT
+
+RETURN
+*================
+RESTORE.COL.AMT:
+*================
+*
+    GOSUB GET.AA.AMOUNT
+
+    CALL F.READ(FN.COLLATERAL,Y.ID.COLLATERAL,R.COLLATERAL,F.COLLATERAL,Y.ERR)
+
+    Y.CUR.COL.AV = R.COLLATERAL<COLL.LOCAL.REF, Y.COL.R.AVL.POS>
+    Y.CUR.COL.MX = R.COLLATERAL<COLL.LOCAL.REF, Y.COL.R.MX.POS>
+
+    IF R.NEW(COLL.RIGHT.COLLATERAL.CODE) EQ 150 THEN        ;* MEANS COLLATERAL DI
+        R.COLLATERAL<COLL.LOCAL.REF, Y.COL.R.AVL.POS> = R.COLLATERAL<COLL.LOCAL.REF, Y.COL.R.AVL.POS> + Y.COL.LOAN.AMT
+    END ELSE
+        R.COLLATERAL<COLL.LOCAL.REF, Y.COL.R.AVL.POS> =  Y.CUR.COL.MX
+    END
+
+    CALL F.WRITE(FN.COLLATERAL,Y.ID.COLLATERAL,R.COLLATERAL)
+
+* obtener el monto en el prestamo el cual esta cubirno por este COL.RIGHT en cuestion.
+* cuando el col.righ pertenzca 150 se debe utilizar este monto y agregarlo al disponible de la garantia
+* caso contrario continuar con el proceso actual.
+
+RETURN
+
+*=============
+GET.AA.AMOUNT:
+*=============
+
+    Y.AA.BAL = ''
+    APAP.REDOSRTN.redoSGetOutBalance(Y.AA.ID,TOTAL.AMT);* R22 Manual conversion
+    Y.AA.BAL    = TOTAL.AMT
+*
+    Y.COL.LOAN.AMT = Y.AA.BAL
+*
+RETURN
+
+*================
+REBUILD.COL.IDS:
+*================
+
+    I.COLL.CNT = 1
+    Y.COLL.NUM = DCOUNT(Y.AA.COL.IDS,@VM) ;*AUTO R22 CODE CONVERSION
+    IF Y.COLL.NUM EQ 0 AND R.AA.ARR.TERM.AMOUNT THEN
+        Y.COLL.NUM = 1
+        Y.AA.COL.IDS<1,I.COLL.CNT> = 'NULL'
+        Y.AA.COL.AMT<1,I.COLL.CNT> = 'NULL'
+        Y.AA.COL.DESC<1,I.COLL.CNT> = 'NULL'
+* PACS00307565 - S
+        Y.AA.COL.AVAMT<1,I.COLL.CNT> = 'NULL'
+* PACS00307565 - E
+    END
+*
+    LOOP
+    WHILE I.COLL.CNT LE Y.COLL.NUM
+* PACS00290578 - S
+*
+* PACS00308600 - S
+        Y.CR.COLID = ''
+        Y.CR.COLID = Y.AA.COL.IDS<1,I.COLL.CNT>
+        Y.CR.COL.AMT = Y.AA.COL.IDS<2,I.COLL.CNT>
+*        Y.COL.LOAN.AMT = Y.CR.COL.AMT
+        Y.CR.COLID = FIELD(Y.CR.COLID,".",1) : '.' :FIELD(Y.CR.COLID,".",2)
+*        IF Y.ID.COLLATERAL NE Y.AA.COL.IDS<1,I.COLL.CNT> AND Y.AA.COL.IDS<1,I.COLL.CNT> NE "" THEN
+        IF Y.ID.COLL.RIGHT NE Y.CR.COLID AND Y.AA.COL.IDS<1,I.COLL.CNT> NE "" THEN
+* PACS00308600 - E
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.NAME,1,-1>  = Y.FIELD:":":I.COLL.CNT:':1'
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.VALUE,1,-1> = Y.AA.COL.IDS<1,I.COLL.CNT>
+* Collateral amount
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.NAME,1,-1>  = Y.FIELD.COL.AMOUNT:":":I.COLL.CNT:':1'
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.VALUE,1,-1> = Y.AA.COL.AMT<1,I.COLL.CNT>
+* PACS00307565 - S
+* AA Balance amount
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.NAME,1,-1>  = Y.FIELD.COL.VALAMT:":":I.COLL.CNT:':1'
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.VALUE,1,-1> = Y.AA.COL.AVAMT<1,I.COLL.CNT>
+* PACS00307565 - E
+* description field
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.NAME,1,-1>  = Y.FIELD.COL.DESC:":":I.COLL.CNT:':1'
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.VALUE,1,-1> = Y.AA.COL.DESC<1,I.COLL.CNT>
+        END
+* PACS00308600 - S
+*        IF Y.ID.COLLATERAL EQ Y.AA.COL.IDS<1,I.COLL.CNT> THEN
+        IF Y.ID.COLL.RIGHT EQ Y.CR.COLID THEN
+* PACS00308600 - E
+* Collateral id
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.NAME,1,-1>  = Y.FIELD:":":I.COLL.CNT:':1'
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.VALUE,1,-1> = 'NULL'
+* Collateral amount
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.NAME,1,-1>  = Y.FIELD.COL.AMOUNT:":":I.COLL.CNT:':1'
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.VALUE,1,-1> = 'NULL'
+* PACS00307565 - S
+* AA balance amount
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.NAME,1,-1>  = Y.FIELD.COL.VALAMT:":":I.COLL.CNT:':1'
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.VALUE,1,-1> = 'NULL'
+* PACS00307565 - E
+* description field
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.NAME,1,-1>  = Y.FIELD.COL.DESC:":":I.COLL.CNT:':1'
+            Y.AA.REQUEST<AA.ARR.ACT.FIELD.VALUE,1,-1> = 'NULL'
+* PACS00308600 - S
+            Y.ID.COLLATERAL = Y.AA.COL.IDS<1,I.COLL.CNT>
+            APAP.TAM.redoDelClBalance(Y.AA.ID, Y.ID.COLLATERAL);* R22 Manual conversion
+*
+            APAP.REDOFCFI.redoFcSCoStatus(Y.ID.COLLATERAL);* Change CO Status to ACTIVE, R22 Manual conversion
+* PACS00308600 - E
+*
+
+        END
+* PACS00290578 - E
+        I.COLL.CNT += 1 ;*AUTO R22 CODE CONVERSION
+    REPEAT
+*
+RETURN
+
+
+*-----------------------------------------------------------------------------------------------------------
+TRIGGER.OFS:
+*============
+* This posts the OFS message formed to the OFS.MESSAGE.QUEUE for processing
+*
+    OFS.MSG.ID = ''
+    OFS.SOURCE = 'FC.OFS'
+    OFS.ERR = ''
+    CALL OFS.POST.MESSAGE(PROCESS.MSG,OFS.MSG.ID,OFS.SOURCE,OFS.ERR)
+RETURN
+END

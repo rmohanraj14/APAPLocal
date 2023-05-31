@@ -1,0 +1,50 @@
+component APAP.BM
+# Component Isolation Definition
+metamodelVersion 1.6
+# -------------------------------------------------
+
+
+public method abBuildData (
+)
+{
+    jBC: AB.BUILD.DATA
+}
+
+public method abGetFcParam (
+)
+{
+    jBC: AB.GET.FC.PARAM
+}
+
+
+
+public method copyReports (
+)
+{
+    jBC: COPY.REPORTS
+}
+
+
+
+public method jobListCheck (
+)
+{
+    jBC: JOB.LIST.CHECK
+}
+
+
+
+public method jtAnalyse (
+)
+{
+    jBC: JT.ANALYSE
+}
+
+
+public method redoEBldValSel (
+    INOUT enqData string
+)
+{
+    jBC: REDO.E.BLD.VAL.SEL
+}
+

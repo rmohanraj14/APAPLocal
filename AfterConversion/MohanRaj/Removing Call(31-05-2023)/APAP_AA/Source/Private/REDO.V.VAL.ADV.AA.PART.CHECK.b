@@ -1,0 +1,411 @@
+* @ValidationCode : MjotMTU5NTA0OTU0ODpDcDEyNTI6MTY4NTUzMzc1MTI5MDo5MTYzODotMTotMTowOjA6ZmFsc2U6Ti9BOlIyMV9BTVIuMDotMTotMQ==
+* @ValidationInfo : Timestamp         : 31 May 2023 17:19:11
+* @ValidationInfo : Encoding          : Cp1252
+* @ValidationInfo : User Name         : 91638
+* @ValidationInfo : Nb tests success  : N/A
+* @ValidationInfo : Nb tests failure  : N/A
+* @ValidationInfo : Rating            : N/A
+* @ValidationInfo : Coverage          : N/A
+* @ValidationInfo : Strict flag       : N/A
+* @ValidationInfo : Bypass GateKeeper : false
+* @ValidationInfo : Compiler Version  : R21_AMR.0
+* @ValidationInfo : Copyright Temenos Headquarters SA 1993-2021. All rights reserved.
+$PACKAGE APAP.AA
+SUBROUTINE REDO.V.VAL.ADV.AA.PART.CHECK
+*-------------------------------------------------------------------------------
+*DESCRIPTION:
+*------------
+*This routine is used as validation routine for the the local field L.AA.PART.ALLOW
+*-------------------------------------------------------------------------------
+* Input/Output:
+*--------------
+* IN  : -NA-
+* OUT : -NA-
+*
+* Dependencies:
+*---------------
+* CALLS : -NA-
+* CALLED BY : -NA-
+*
+* Revision History:
+*------------------
+*   Date               who           Reference            Description
+* 10-08-2011        S.MARIMUTHU     PACS00060279         Initial Creation
+* 14-10-2011        S.MARIMUTHU     PACS00142802
+* 12-11-2011        S.MARIMUTHU     PACS00146864
+* 12-02-2012        S.MARIMUTHU     PACS00170057
+* 29/03/2023       Conversion Tool    AUTO R22 CODE CONVERSTION      Y.ADV.INS = Y.ADV.INS + 1 to  Y.ADV.INS += 1, FM TO @FM,VM TO @VM,SM TO @SM
+* 29/03/2023       SURESH             MANUAL R22 CODE CONVERSTION    Package Name added APAP.AA, CALL method format changed
+*-------------------------------------------------------------------------------
+    $INSERT I_COMMON
+    $INSERT I_EQUATE
+    $INSERT I_F.FUNDS.TRANSFER
+    $INSERT I_F.AA.ACCOUNT.DETAILS
+    $INSERT I_F.AA.BILL.DETAILS
+    $INSERT I_F.AA.TERM.AMOUNT
+    $INSERT I_F.AA.PAYMENT.SCHEDULE
+    $INSERT I_F.AA.ARRANGEMENT
+    $INSERT I_F.ACCOUNT
+    $INSERT I_System
+    $INSERT I_F.VERSION
+    $INSERT I_GTS.COMMON
+    $USING APAP.TAM
+
+MAIN:
+
+    IF COMI EQ '' OR COMI EQ 'NO' THEN
+        RETURN
+    END
+
+    IF OFS$SOURCE.ID EQ 'FASTPATH' THEN
+        RETURN
+    END
+
+    GOSUB OPENFILES
+    GOSUB PROCESS
+    GOSUB PGM.END
+
+OPENFILES:
+
+    FN.AA.ARRANGEMENT = 'F.AA.ARRANGEMENT'
+    F.AA.ARRANGEMENT = ''
+    CALL OPF(FN.AA.ARRANGEMENT,F.AA.ARRANGEMENT)
+
+    FN.ACCOUNT = 'F.ACCOUNT'
+    F.ACCOUNT = ''
+    CALL OPF(FN.ACCOUNT,F.ACCOUNT)
+
+    FN.AA.ACCOUNT.DETAILS = 'F.AA.ACCOUNT.DETAILS'
+    F.AA.ACCOUNT.DETAILS = ''
+    CALL OPF(FN.AA.ACCOUNT.DETAILS,F.AA.ACCOUNT.DETAILS)
+
+    FN.AA.BILL.DETAILS = 'F.AA.BILL.DETAILS'
+    F.AA.BILL.DETAILS = ''
+    CALL OPF(FN.AA.BILL.DETAILS,F.AA.BILL.DETAILS)
+
+    APPLS = 'FUNDS.TRANSFER':@FM:'AA.PRD.DES.TERM.AMOUNT' ;*AUTO R22 CODE CONVERSION
+    POS.VAL = ''
+    F.FIELDS = 'L.NO.OF.INSTAL':@VM:'L.AA.PART.ALLOW':@VM:'L.ADV.INS.CNT':@VM:'L.FT.BIL.OVRDUE':@FM:'L.AA.PART.ALLOW':@VM:'L.AA.PART.PCNT' ;*AUTO R22 CODE CONVERSION
+    CALL MULTI.GET.LOC.REF(APPLS,F.FIELDS,POS.VAL)
+    POS.NO.INS = POS.VAL<1,1>
+    POS.PART.ALLW = POS.VAL<1,2>
+    POS.ADV.INS = POS.VAL<1,3>
+    POS.BIL.OVR = POS.VAL<1,4>
+    POS.PART = POS.VAL<2,1>
+    POS.PART.PERC = POS.VAL<2,2>
+
+RETURN
+
+PROCESS:
+
+
+*  IF MESSAGE EQ 'VAL' THEN
+*      RETURN
+*  END
+
+    Y.FIN.AMT = 0
+    Y.PART.VAL = COMI
+    VAR.AA.ID = R.NEW(FT.CREDIT.ACCT.NO)
+
+    IF VAR.AA.ID[1,2] NE 'AA' THEN
+        CALL F.READ(FN.ACCOUNT,VAR.AA.ID,R.ACCOUNT,F.ACCOUNT,ACC.ERR)
+        VAR.AA.ID = R.ACCOUNT<AC.ARRANGEMENT.ID>
+        Y.CUS = R.ACCOUNT<AC.CUSTOMER>
+    END ELSE
+        CALL F.READ(FN.AA.ARRANGEMENT,VAR.AA.ID,R.AA.ARRANGEMENT,F.AA.ARRANGEMENT,AA.ARR.ERR)
+        Y.CUS = R.AA.ARRANGEMENT<AA.ARR.CUSTOMER>
+    END
+
+    Y.NO.OF.INS = R.NEW(FT.LOCAL.REF)<1,POS.NO.INS>
+    Y.ADV.INS = R.NEW(FT.LOCAL.REF)<1,POS.ADV.INS>
+    Y.DUP.NOF.INS = Y.NO.OF.INS
+    GOSUB GET.PAY.DETAILS
+
+    IF Y.PART.VAL EQ 'YES' OR Y.PART.VAL EQ 'SI' THEN
+        IF Y.DUP.NOF.INS EQ '' OR Y.DUP.NOF.INS EQ R.NEW(FT.LOCAL.REF)<1,POS.BIL.OVR> THEN
+            IF Y.ADV.INS NE '' THEN
+                GOSUB CALC.ADV.AMT
+            END ELSE
+* PACS00142802 -S
+                GOSUB CALC.ADV.PART.AMT
+* PACS00142802 -E
+            END
+        END ELSE
+            AF = FT.LOCAL.REF
+            AV = POS.NO.INS
+            ETEXT = 'EB-NO.INS.LT.PARTIAL'
+            CALL STORE.END.ERROR
+            Y.FIN.AMT = ''
+        END
+    END ELSE
+        GOSUB CALC.ADV.AMT
+    END
+
+    IF Y.FIN.AMT EQ '' OR Y.FIN.AMT EQ 0 THEN
+        IF Y.PART.VAL EQ 'NO' AND R.NEW(FT.CREDIT.AMOUNT) GT 0 THEN
+            AF = FT.LOCAL.REF
+            AV = POS.PART.ALLW
+            ETEXT = 'EB-PART.NOT.ALLOW'
+            CALL STORE.END.ERROR
+            Y.FIN.AMT = ''
+        END
+    END
+
+    IF Y.FIN.AMT GT 0 THEN
+        IF R.NEW(FT.CREDIT.AMOUNT) GT Y.FIN.AMT ELSE
+            Y.FIN.AMT = FMT(Y.FIN.AMT,'R2')
+            R.NEW(FT.CREDIT.AMOUNT) = Y.FIN.AMT
+        END
+    END
+
+    CALL System.setVariable("CURRENT.CRED.AMT",Y.FIN.AMT)
+
+*------ Group 12 ---
+    IF R.VERSION(EB.VER.VERSION.TYPE) EQ 'NV' THEN
+        Y.COMI = COMI
+        Y.AF   = AF
+        Y.AV   = AV
+        Y.AS   = AS
+        COMI = R.NEW(FT.CREDIT.AMOUNT)
+
+        APAP.TAM.redoValMtsAmountFt();* R22 Manual conversion
+        COMI  =     Y.COMI
+        AF    =     Y.AF
+        AV    =     Y.AV
+        AS    =     Y.AS
+    END
+*------ Group 12 ---
+
+
+RETURN
+
+CALC.ADV.PART.AMT:
+
+* PACS00142802 -S
+
+    IF Y.PART EQ 'YES' OR Y.PART EQ 'SI' THEN
+        IF R.AA.BILL.DETAILS<AA.BD.OR.TOTAL.AMOUNT> LT SUM(R.AA.BILL.DETAILS<AA.BD.OS.PROP.AMOUNT>) THEN
+            Y.DUP.FIN.AMT = (SUM(R.AA.BILL.DETAILS<AA.BD.OS.PROP.AMOUNT>)*Y.PARTIAL/100)
+        END ELSE
+            Y.DUP.FIN.AMT = (R.AA.BILL.DETAILS<AA.BD.OR.TOTAL.AMOUNT>*Y.PARTIAL/100)
+        END
+        IF Y.DUP.FIN.AMT LT SUM(R.AA.BILL.DETAILS<AA.BD.OS.PROP.AMOUNT>) THEN
+            Y.FIN.AMT = Y.FIN.AMT - SUM(R.AA.BILL.DETAILS<AA.BD.OS.PROP.AMOUNT>) + Y.DUP.FIN.AMT
+        END ELSE
+            Y.FIN.AMT = Y.FIN.AMT
+        END
+*  Y.FIN.AMT = FMT(Y.FIN.AMT,'R2')
+    END ELSE
+        AF = FT.LOCAL.REF
+        AV = POS.PART.ALLW
+        ETEXT = 'EB-PART.NOT.ALLOW'
+        CALL STORE.END.ERROR
+        Y.FIN.AMT = ''
+    END
+
+* PACS00142802 -E
+RETURN
+
+GET.PAY.DETAILS:
+
+    CALL F.READ(FN.AA.ACCOUNT.DETAILS,VAR.AA.ID,R.AA.ACCOUNT.DETAILS,F.AA.ACCOUNT.DETAILS,AA.AC.ERR)
+    Y.TOT.BILS = R.AA.ACCOUNT.DETAILS<AA.AD.BILL.ID>
+    Y.TOT.BILS = CHANGE(Y.TOT.BILS,@SM,@VM) ;*AUTO R22 CODE CONVERSION
+    Y.CN.VM = DCOUNT(Y.TOT.BILS,@VM) ;*AUTO R22 CODE CONVERSION
+
+    YFIRST.BILLDTE = ''
+    YFIRST.BILLDTE = R.AA.ACCOUNT.DETAILS<AA.AD.BILL.PAY.DATE,1>
+    IF NOT(YFIRST.BILLDTE) THEN
+        YFIRST.BILLDTE = TODAY
+    END
+
+    Y.CNT = DCOUNT(R.AA.ACCOUNT.DETAILS<AA.AD.BILL.PAY.DATE>,@VM) ;*AUTO R22 CODE CONVERSION
+    FLG.VAL = ''
+    IF Y.PART.VAL EQ 'YES' OR Y.PART.VAL EQ 'SI' THEN
+        LOOP
+        WHILE Y.CNT GT 0 DO
+            FLG.VAL += 1
+            Y.TYPE = R.AA.ACCOUNT.DETAILS<AA.AD.BILL.TYPE,FLG.VAL>
+            Y.CNT.TYPE = DCOUNT(Y.TYPE,@SM) ;*AUTO R22 CODE CONVERSION
+            GOSUB SUB.PROCESS.EACH.BIL
+            Y.CNT -= 1
+        REPEAT
+    END ELSE
+        GOSUB GET.SUB.PROCESS.DET
+    END
+
+    PROP.CLASS='TERM.AMOUNT'; YMAT.DATE = ''
+    APAP.AA.redoCrrGetConditions(VAR.AA.ID,EFF.DATE,PROP.CLASS, PROPERTY,R.CONDITION,ERR.MSG);* R22 Manual conversion
+    Y.PARTIAL = R.CONDITION<AA.AMT.LOCAL.REF,POS.PART.PERC>
+    Y.PART = R.CONDITION<AA.AMT.LOCAL.REF,POS.PART>
+* FIX R15 20170802
+    YMAT.DATE = R.CONDITION<AA.AMT.MATURITY.DATE>
+
+RETURN
+
+SUB.PROCESS.EACH.BIL:
+
+    IF Y.CNT.TYPE EQ 1 THEN
+        IF R.AA.ACCOUNT.DETAILS<AA.AD.BILL.TYPE,FLG.VAL,1> EQ 'PAYMENT' THEN
+            Y.BILL.ID = R.AA.ACCOUNT.DETAILS<AA.AD.BILL.ID,FLG.VAL,1>
+            CALL F.READ(FN.AA.BILL.DETAILS,Y.BILL.ID,R.AA.BILL.DETAILS,F.AA.BILL.DETAILS,BILL.ERR)
+            Y.SETTLE.STATUS = R.AA.BILL.DETAILS<AA.BD.SETTLE.STATUS,1>
+            IF Y.SETTLE.STATUS EQ 'UNPAID' THEN
+                Y.FIN.AMT += SUM(R.AA.BILL.DETAILS<AA.BD.OS.PROP.AMOUNT>)
+                FLG += 1
+            END ELSE
+                FIN.CNT += 1
+            END
+        END ELSE
+            IF R.AA.ACCOUNT.DETAILS<AA.AD.BILL.TYPE,FLG.VAL,1> EQ 'ACT.CHARGE' THEN
+                FIN.CNT += 1
+            END
+        END
+    END ELSE
+        GOSUB PROCESS.MANY.BILS
+    END
+
+RETURN
+
+GET.SUB.PROCESS.DET:
+
+    LOOP
+    WHILE (Y.NO.OF.INS GT 0) AND (Y.CNT GT 0) DO
+        FLG.VAL += 1
+        Y.TYPE = R.AA.ACCOUNT.DETAILS<AA.AD.BILL.TYPE,FLG.VAL>
+        Y.CNT.TYPE = DCOUNT(Y.TYPE,@SM) ;*AUTO R22 CODE CONVERSION
+        IF Y.CNT.TYPE EQ 1 THEN
+            IF R.AA.ACCOUNT.DETAILS<AA.AD.BILL.TYPE,FLG.VAL,1> EQ 'PAYMENT' THEN
+                Y.BILL.ID = R.AA.ACCOUNT.DETAILS<AA.AD.BILL.ID,FLG.VAL,1>
+                CALL F.READ(FN.AA.BILL.DETAILS,Y.BILL.ID,R.AA.BILL.DETAILS,F.AA.BILL.DETAILS,BILL.ERR)
+                Y.SETTLE.STATUS = R.AA.BILL.DETAILS<AA.BD.SETTLE.STATUS,1>
+                GOSUB CHECK.UNPAID
+            END ELSE
+                GOSUB CHECK.ACT.CHARGE
+            END
+        END ELSE
+            GOSUB PROCESS.MANY.BILS
+        END
+        Y.CNT -= 1
+    REPEAT
+
+RETURN
+
+PROCESS.MANY.BILS:
+
+    FG.LG = ''
+    LOOP
+    WHILE Y.CNT.TYPE GT 0 DO
+        FG.LG += 1
+
+        IF R.AA.ACCOUNT.DETAILS<AA.AD.BILL.TYPE,FLG.VAL,FG.LG> EQ 'PAYMENT' THEN
+            Y.BILL.ID = R.AA.ACCOUNT.DETAILS<AA.AD.BILL.ID,FLG.VAL,FG.LG>
+            CALL F.READ(FN.AA.BILL.DETAILS,Y.BILL.ID,R.AA.BILL.DETAILS,F.AA.BILL.DETAILS,BILL.ERR)
+            Y.SETTLE.STATUS = R.AA.BILL.DETAILS<AA.BD.SETTLE.STATUS,1>
+            IF Y.SETTLE.STATUS EQ 'UNPAID' THEN
+                Y.FIN.AMT += SUM(R.AA.BILL.DETAILS<AA.BD.OS.PROP.AMOUNT>)
+                FLG += 1
+            END ELSE
+                GOSUB CHECK.PAY.DATE
+            END
+        END
+
+        IF R.AA.ACCOUNT.DETAILS<AA.AD.BILL.TYPE,FLG.VAL,FG.LG> EQ 'ACT.CHARGE' THEN
+            Y.BILL.ID = R.AA.ACCOUNT.DETAILS<AA.AD.BILL.ID,FLG.VAL,FG.LG>
+            CALL F.READ(FN.AA.BILL.DETAILS,Y.BILL.ID,R.AA.BILL.DETAILS,F.AA.BILL.DETAILS,BILL.ERR)
+
+            Y.PAY.DATE = R.AA.BILL.DETAILS<AA.BD.PAYMENT.DATE>
+            IF Y.PAY.DATE NE Y.DUP.DATE THEN
+                Y.DUP.DATE = Y.PAY.DATE
+                FIN.CNT += 1
+            END
+        END
+        Y.CNT.TYPE -= 1
+    REPEAT
+
+RETURN
+
+CALC.ADV.AMT:
+
+* PACS00142802 -S
+
+* FIX R15 20170802
+    DATE.RANGE = YFIRST.BILLDTE:@FM:YMAT.DATE ;*AUTO R22 CODE CONVERSION
+    ARRANGEMENT.ID = VAR.AA.ID
+    CALL AA.SCHEDULE.PROJECTOR(ARRANGEMENT.ID, SIMULATION.REF, NO.RESET, DATE.RANGE, TOT.PAYMENT, DUE.DATES, DUE.DEFER.DATES, DUE.TYPES, DUE.METHODS,DUE.TYPE.AMTS, DUE.PROPS, DUE.PROP.AMTS, DUE.OUTS)
+
+    IF Y.PART.VAL EQ 'YES' OR Y.PART.VAL EQ 'SI' THEN
+        IF Y.PART NE 'YES' THEN
+            AF = FT.LOCAL.REF
+            AV = POS.PART.ALLW
+            ETEXT = 'EB-PART.NOT.ALLOW'
+            CALL STORE.END.ERROR
+            Y.FIN.AMT = ''
+        END ELSE
+            FLG.DUP = 0
+            GOSUB CALC.SCH.AMT
+        END
+    END ELSE
+        FLG.DUP = 1 ; Y.ADV.INS += 1 ;*AUTO R22 CODE CONVERSION
+        GOSUB CALC.SCH.AMT
+    END
+    Y.FIN.AMT += VAR.INSTALL.AMOUNT
+* Y.FIN.AMT = FMT(Y.FIN.AMT,'R2')
+
+RETURN
+
+CALC.SCH.AMT:
+
+    FLG.PR = ''
+    FLG.FIN = FLG + FIN.CNT
+    LOOP
+    WHILE Y.ADV.INS GT FLG.DUP DO
+        FLG.FIN += 1
+        Y.PROP = DUE.PROPS<FLG.FIN>
+        Y.PROP = CHANGE(Y.PROP,@SM,@VM) ;*AUTO R22 CODE CONVERSION
+        IF 'ACCOUNT' MATCHES Y.PROP OR 'PRINCIPALINT' MATCHES Y.PROP OR 'PENALTINT' MATCHES Y.PROP THEN
+            IF Y.ADV.INS NE 1 THEN
+                VAR.INSTALL.AMOUNT += TOT.PAYMENT<FLG.FIN>
+            END ELSE
+                VAR.INSTALL.AMOUNT += (TOT.PAYMENT<FLG.FIN> * (Y.PARTIAL/100))
+            END
+        END ELSE
+            Y.ADV.INS += 1
+        END
+        Y.ADV.INS -= 1
+    REPEAT
+
+RETURN
+
+* PACS00142802 -E
+**********************
+CHECK.UNPAID:
+********************
+    IF Y.SETTLE.STATUS EQ 'UNPAID' THEN
+        Y.FIN.AMT += SUM(R.AA.BILL.DETAILS<AA.BD.OS.PROP.AMOUNT>)
+        Y.NO.OF.INS -= 1
+        FLG += 1
+    END ELSE
+        FIN.CNT += 1
+    END
+RETURN
+**********************
+CHECK.ACT.CHARGE:
+********************
+    IF R.AA.ACCOUNT.DETAILS<AA.AD.BILL.TYPE,FLG.VAL,1> EQ 'ACT.CHARGE' THEN
+        FIN.CNT += 1
+    END
+RETURN
+**********************
+CHECK.PAY.DATE:
+********************
+    Y.PAY.DATE = R.AA.BILL.DETAILS<AA.BD.PAYMENT.DATE>
+    IF Y.PAY.DATE NE Y.DUP.DATE THEN
+        Y.DUP.DATE = Y.PAY.DATE
+        FIN.CNT += 1
+    END
+RETURN
+********************************
+PGM.END:
+
+END
